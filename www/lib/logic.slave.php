@@ -111,6 +111,7 @@ function checkIfMaster() {
 }
 
 function getMasterControllerIP() {
+    //TODO get real master ip
     return "192.168.178.137";
 }
 

@@ -54,6 +54,35 @@ function saveReport($user, $msg, $key = "empty") { //empty => null
     return create_object($report, 'reports', null);
 }
 
+
+/* 
+    Avahi
+*/
+$serviceTypeUdp = "_maasland._udp"; //created by avahi deamon
+$serviceTypeTcp = "_maasland._tcp"; //created by coap_listener (avahi publish)
+$serviceMasterSubType = "_master._sub._maasland._udp"; //created by avahi deamon (avahi publish)
+function mdnsPublish() {
+    global $serviceType, $serviceMasterSubType;
+    $cmd = "avahi-publish-service ".
+        'flexess '.$serviceTypeTcp.' 80 "path=/" "version=1.4" '.
+        "--sub ".$serviceMasterSubType;
+    mylog($cmd."\n");
+    return exec($cmd. " > /dev/null &");
+}
+function mdnsBrowse($type) {
+    $cmd = "avahi-browse -trp ". $type;
+    mylog($cmd."\n");
+    $result = array();
+    $lines = explode("\n", shell_exec($cmd));
+    foreach ($lines as &$line) {
+        if(strpos($line, '=') === 0) {
+            $result[] = explode(";", $line);
+        }     
+    }
+    //unset($result);
+    return $result;
+}
+
 /* 
     View functions 
 */
