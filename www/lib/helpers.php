@@ -58,13 +58,16 @@ function saveReport($user, $msg, $key = "empty") { //empty => null
 /* 
     Avahi
 */
-$serviceTypeUdp = "_maasland._udp"; //created by avahi deamon
-$serviceTypeTcp = "_maasland._tcp"; //created by coap_listener (avahi publish)
-$serviceMasterSubType = "_master._sub._maasland._udp"; //created by avahi deamon (avahi publish)
+$serviceTypeUdp = "_maasland._udp 5683"; //created by avahi deamon
+$serviceTypeTcp = "_maasland._tcp 80"; //created by coap_listener (avahi publish)
+$serviceMasterSubType = "_master._sub._maasland._udp"; //created by coap_listener (avahi publish)
+
+//avahi-publish-service flexess _coap._udp 5683 "version=1.4" --sub _master._sub._maasland._udp
+//avahi-publish-service flexess _maasland._tcp 80 "version=1.4" --sub _master._sub._maasland._udp
 function mdnsPublish() {
-    global $serviceType, $serviceMasterSubType;
+    global $serviceTypeTcp, $serviceMasterSubType;
     $cmd = "avahi-publish-service ".
-        'flexess '.$serviceTypeTcp.' 80 "path=/" "version=1.4" '.
+        'flexess '.$serviceTypeTcp.' "path=/" "version=1.4" '.
         "--sub ".$serviceMasterSubType;
     mylog($cmd."\n");
     return exec($cmd. " > /dev/null &");

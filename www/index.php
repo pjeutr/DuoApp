@@ -46,14 +46,14 @@ function before($route = array())
     //Allow login POST to submit. TODO needs check on uri=login?
     if(request_method() != "POST") {
       //need session to get in dashboard
-      if(isset($_SESSION['login'])) { //session is ok
-        layout('layout/default.html.php');
-      } elseif(! checkIfMaster()) { //allow cli
-      //} elseif(strpos(request_uri(), '/door/') !== false) { //allow cli
-      //} elseif(request_uri() == "/door/1") { //allow cli
-        echo showSlavePage();
+      if(! checkIfMaster()) { //session is ok
+        //} elseif(strpos(request_uri(), '/door/') !== false) { //allow cli
+        //} elseif(request_uri() == "/door/1") { //allow cli
+        echo slave_page();
         //layout('layout/default.html.php');
         stop_and_exit();
+      } elseif(isset($_SESSION['login'])) { //check if user is logged in
+        layout('layout/default.html.php');
       } else { //force login
         echo login_page();
         stop_and_exit();
@@ -99,7 +99,7 @@ function login_page() {
 }
 function slave_page() {
   return html('slave.html.php');
-  }
+}
 function login_page_post() {
   //TODO geen sanitize check
   if(check_password($_POST['password'])) {
