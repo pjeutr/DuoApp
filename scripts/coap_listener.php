@@ -92,14 +92,16 @@ function readOption($option, $i) {
 $observer = new \Calcinai\Rubberneck\Observer($loop);
 
 $observer->onModify(function($file_name){
-	mylog("Modified:". $file_name);
+	mylog("Modified:". $file_name. "\n");
 	//determine the input number for this file
 	$input = resolveInput($file_name);
 	//find the value
 	$value = getInputValue($file_name);
+	mylog("value:". $value. "\n");
 	//check if this is a wiegand reader
 	if($input == 1) {
 		$lastline = exec("tail -n1 /var/log/messages");
+		mylog($lastline );
 		if(strpos($lastline,"keycode") > 0){
 			//TODO can't go searching in log, change wiegand driver!
 			$parts = explode(' ',$lastline);
@@ -117,9 +119,10 @@ $observer->onModify(function($file_name){
 	}    
 });
 //Declare inputs to observe
-//$observer->watch('/sys/kernel/wiegand/read'); werkt niet, dan maar via messages...
+//$observer->watch('/sys/kernel/wiegand/read'); 
+$observer->watch('/sys/class/wiegand/value'); 
 //maybe adding a newline? or write at a different place. not in sys
-$observer->watch('/var/log/messages');
+//$observer->watch('/var/log/messages');
 $observer->watch('/sys/class/gpio/gpio170/value');
 //$observer->watch('/sys/class/gpio/gpio170/value');
 //$observer->watch('/sys/class/gpio/gpio68/value');
