@@ -198,6 +198,8 @@ function initGPIO($gpio, $out = true) {
             exec("echo out >/sys/class/gpio/gpio".$gpio."/direction"); 
         } else {
            exec("echo in >/sys/class/gpio/gpio".$gpio."/direction"); 
+           //input edge needs to be set to both, so inotify can be used
+           exec("echo both >/sys/class/gpio/gpio".$gpio."/edge"); 
         }
     }
 }
