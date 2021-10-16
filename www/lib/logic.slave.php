@@ -117,6 +117,10 @@ function getMasterControllerIP() {
         $result = mdnsBrowse("_master._sub._maasland._udp");
         mylog(json_encode($result)."\n");
         $masterControllerIp = $result[0][7];
+        if(empty($masterControllerIp)) {
+            die ("ERROR: Master Controller not found :".json_encode($result)."\n");
+            //TODO restart coap_listener.php
+        }
         return $masterControllerIp;
     //}
 
@@ -140,11 +144,13 @@ function inputReceived($input, $data) {
     }
 }
 
+//TODO ^
 function makeInputCoapCall($uri) {
-    //input events are always going to the master
-    $cmd = "coap-client -m get coap://".getMasterControllerIP()."/input/".$uri;
-    mylog("makeInputCoapCall:".$cmd);
-    return shell_exec($cmd);
+    $url = "input/".$uri;
+    mylog($url);
+    $msg = apiCall(getMasterControllerIP(), $url);
+    mylog($msg);
+    return $msg;
 }
 
 

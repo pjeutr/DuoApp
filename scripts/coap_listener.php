@@ -132,7 +132,7 @@ $inputObserver->onModify(function($file_name){
 //$observer->watch('/sys/class/wiegand/value'); 
 //maybe adding a newline? or write at a different place. not in sys
 //$observer->watch('/var/log/messages');
-$wiegandObserver->watch('/sys/class/gpio/gpio170/value');
+$wiegandObserver->watch('/sys/kernel/wiegand/read');
 $inputObserver->watch('/sys/class/gpio/gpio170/value');
 //$observer->watch('/sys/class/gpio/gpio170/value');
 //$observer->watch('/sys/class/gpio/gpio68/value');
@@ -152,8 +152,7 @@ $server->on( 'request', function( $req, $res, $handler ) use ($loop){
 		$input = readOption($o,1);
 		$data = readOption($o,2);
 		mylog("coapServer: ".checkIfMaster()." input=".$input." data=".$data);
-		//$result = checkIfMaster() ? handleInput($from, $input, $data) : "can only be called on master";
-		$result =  inputReceived($input, $data);
+		$result = handleInput($from, $input, $data);
 	/*
 	* TODO split up?
 	* Above requests will only happen on master

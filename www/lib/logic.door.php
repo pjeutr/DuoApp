@@ -235,9 +235,9 @@ function checkDoorSchedule($door) {
 function openDoor($door, $controller) {
     $duration=find_setting_by_name("door_open");
     $soundBuzzer=find_setting_by_name("sound_buzzer");
-    mylog(json_encode($door));
-    mylog(json_encode($controller));
-    mylog("Open Door ".$door->id." cid=".$controller->id." duration=".$duration." sound_buzzer=".$soundBuzzer);
+    mylog("\nDoor=".json_encode($door));
+    mylog("\nCon=".json_encode($controller));
+    mylog("\nOpen Door ".$door->id." cid=".$controller->id." duration=".$duration." sound_buzzer=".$soundBuzzer);
 
     $gpios = array();
     //aggegrate gpios to switch on/off
@@ -257,16 +257,14 @@ function openDoor($door, $controller) {
     //mylog("extra gpios=".json_encode($gpios));
     mylog("extra gpios=".json_encode($gpios));
 
-    if( $controller->id === 1 ) {
+    if( $controller->id == 1 ) {
         //call method on master, is quicker and more reliable
         //and nesting coap-client calls is not working currently
         $msg = activateOutput($door->id, $duration, $gpios);
     } else {
-        $cmd = "coap-client -m get coap://".$controller->ip."/activate/".$door->enum."/".$duration."/".implode("-",$gpios);
-        mylog($cmd);
-        $msg = shell_exec($cmd);
+        $uri = "activate/".$door->enum."/".$duration."/".implode("-",$gpios);
+        $msg = apiCall($controller->ip, $uri);
     }
-    
     return $msg;
 }
 
