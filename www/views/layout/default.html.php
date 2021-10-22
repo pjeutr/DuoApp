@@ -59,7 +59,7 @@ $message = flash_now();
         <div class="loaderImage" style="display: none;">
             <img src="/assets/img/spinner.gif">
         </div>  
-        <div class="sidebar" data-image="../assets/img/sidebar-5.jpg" data-color="green">
+        <div class="sidebar" data-image="../assets/img/sidebar.jpg" data-color="black">
             <div class="sidebar-wrapper">
                 <div class="logo">
                     <a href="./" class="simple-text logo-mini">
