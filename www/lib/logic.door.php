@@ -204,9 +204,11 @@ function handleUserAccess($user, $readerId, $controller) {
 */
 function checkDoorSchedule($door) {
     $tz = find_timezone_by_id($door->timezone_id);
+    mylog($tz);
     mylog("checkDoorSchedule door=".$door->id." tz=".$door->timezone_id);
-    // if($door->timezone_id) {
+    if($door->timezone_id) {
         $now = new DateTime();
+        mylog($now);
         //check if it is the right day of the week
         $weekday = $now->format('w');//0 (for Sunday) through 6 (for Saturday) 
         $weekdays = explode(",",$tz->weekdays);
@@ -219,7 +221,7 @@ function checkDoorSchedule($door) {
                 return true;
             }
         }
-    //}
+    }
     return false;
 }
 

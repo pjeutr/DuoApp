@@ -133,31 +133,6 @@ function getMasterURL() {
     return "http://".getMasterControllerIP()."/";
 }
 
-
-function inputReceived($input, $data) {
-    mylog((checkIfMaster() ? 'Master' : 'Slave' )." inputReceived:".$input);
-    if ( checkIfMaster() ) {
-        return handleInput(getMasterControllerIP(), $input, $data);
-    } else {
-        //tunnel through coap to the master where handleInput is called
-        return makeInputCoapCall($input."/".$data);
-    }
-}
-
-//TODO ^
-function makeInputCoapCall($uri) {
-    $url = "input/".$uri;
-    mylog($url);
-    $msg = apiCall(getMasterControllerIP(), $url);
-    mylog($msg);
-    return $msg;
-}
-
-
-
-
-
-
 /*
 *   Hardware translate functions 
 */
