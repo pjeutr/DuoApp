@@ -32,7 +32,7 @@ private static $installed = array (
     'aliases' => 
     array (
     ),
-    'reference' => 'b6ec7a1e86dc8223e88e34a4bf37f77aae3838d1',
+    'reference' => '6418fc664e28cc6fbb4b8a8f686aad76b59fc802',
     'name' => '__root__',
   ),
   'versions' => 
@@ -44,7 +44,7 @@ private static $installed = array (
       'aliases' => 
       array (
       ),
-      'reference' => 'b6ec7a1e86dc8223e88e34a4bf37f77aae3838d1',
+      'reference' => '6418fc664e28cc6fbb4b8a8f686aad76b59fc802',
     ),
     'calcinai/rubberneck' => 
     array (

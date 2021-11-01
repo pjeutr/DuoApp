@@ -64,7 +64,7 @@ function callApi($input, $data) {
 			$request = $client->request('GET', $url);
 			$request->on('response', function ( $response ) {
 			    $response->on('data', function ( $data ) {
-			        mylog($data);
+			    	mylog("apiCall return=".json_encode($data));
 			        return $data;
 			    });
 			});
@@ -77,7 +77,7 @@ function callApi($input, $data) {
 	        #Er is een bug bij client-get, zelf fixen?
 	        #https://github.com/cfullelove/PhpCoap/issues/5
 			$client->get($url, function( $data ) {
-				mylog($data);
+				mylog("coapCall return=".json_encode($data));
 			    return $data;
 			});
 		}
@@ -93,21 +93,17 @@ $loop = React\EventLoop\Factory::create();
 //$inputObserver = new \Calcinai\Rubberneck\Observer($loop, EpollWait::class);
 $wiegandObserver = new \Calcinai\Rubberneck\Observer($loop, 0);
 $wiegandObserver->onModify(function($file_name){
-	//mylog("Modified:". $file_name. "\n");
-	//determine the input number for this file
-	$input = resolveInput($file_name);
 	//find the value
 	$value = getInputValue($file_name);
-	//mylog("value:". $value. "\n");
-
 	$parts = explode(':',$value);
 	$nr = $parts[0];
 	$keycode = $parts[1];
 	$reader = $parts[2];
 	mylog("Wiegand:". $reader.":".$keycode);
 	$result =  callApi($reader, $keycode);
-    mylog("Wiegand2:". $result);
+    mylog(json_encode($result));
 });	
+
 //$inputObserver = new \Calcinai\Rubberneck\Observer($loop, InotifyWait::class);
 $inputObserver = new \Calcinai\Rubberneck\Observer($loop, 1);
 $inputObserver->onModify(function($file_name){
@@ -124,17 +120,23 @@ $inputObserver->onModify(function($file_name){
         mylog(json_encode($result));
 	}   
 	//TODO sleep / prevent klapperen 
-	sleep(1);
+	//sleep(1);
 });
-//Declare inputs to observe
-//$observer->watch('/dev/wiegand'); 
-//$observer->watch('/sys/kernel/wiegand/read'); 
-//$observer->watch('/sys/class/wiegand/value'); 
-//maybe adding a newline? or write at a different place. not in sys
-//$observer->watch('/var/log/messages');
+
+//listen voor gpio inputs
+global $inputArray;
+foreach ($inputArray as $value) {
+	mylog("inputObserver init:". $value ." \n");
+    $inputObserver->watch($value);
+}
+//$inputObserver->watch('/sys/class/gpio/gpio170/value');
+
+//listen voor wiegand readers
 $wiegandObserver->watch('/dev/wiegand');
-$inputObserver->watch('/sys/class/gpio/gpio170/value');
-//$observer->watch('/sys/class/gpio/gpio170/value');
-//$observer->watch('/sys/class/gpio/gpio68/value');
+
+
+
+
+
 
 $loop->run();

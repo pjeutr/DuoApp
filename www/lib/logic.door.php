@@ -84,6 +84,8 @@ function handleInput($from, $input, $keycode) {
     }    
     //save report
     saveReport($actor, $action, keyToHex($keycode));
+    mylog("INPUT@SLAVE ".$input);
+    mylog($result);
     return array(
         "actor" =>$actor, 
         "controller" => $controller->name, 
