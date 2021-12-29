@@ -21,7 +21,7 @@ $doors = find_doors();
                                 </div>
                             </div>
                             <div class="col-7">
-                                <?= $door->cname ?> <sub>Controller</sub>
+                                <?= $door->cname ?> <sub><?=  L("controller"); ?></sub>
                             </div>
                         </div>
                     </div>

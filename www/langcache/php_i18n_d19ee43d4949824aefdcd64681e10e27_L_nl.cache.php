@@ -1,22 +1,22 @@
 <?php class L {
-const language = 'Language';
+const language = 'Taal';
 const user = 'gebruiker';
 const group = 'groep';
 const door = 'deur';
 const timezone = 'tijdzone';
 const report = 'rapport';
-const setting_door = 'Door open duration (in seconds)';
-const setting_buzzer = 'Sound buzzer when opening door';
-const setting_hostname = 'Hostname';
+const setting_door_open = 'Deur open tijd (in seconden)';
+const setting_sound_buzzer = 'Zoemer klinkt wanneer deur wordt geopend';
+const setting_hostname = 'Hostnaam';
 const setting_password = 'Password';
-const setting_apb = 'APB(in seconds)';
-const setting_alarm = 'Hostname';
-const setting_upload = 'Upload configuration';
-const setting_download = 'Download configuration';
+const setting_apb = 'Anti-passback(in seconden)';
+const setting_alarm = 'Hostnaam';
+const setting_upload = 'Configuratie uploaden';
+const setting_download = 'Configuratie downloaden';
 const controller = 'controller';
-const edit = 'Edit';
-const add = 'Add';
-const new = 'New';
+const edit = 'Bewerken';
+const add = 'Toevoegen';
+const new = 'Nieuw';
 const users = 'Gebruikers';
 const groups = 'Groepen';
 const doors = 'Deuren';
@@ -25,71 +25,72 @@ const reports = 'Rapporten';
 const settings = 'Instellingen';
 const controllers = 'Controllers';
 const id = 'id';
-const name = 'name';
-const key = 'keycode';
-const time = 'Time';
-const key_sub = 'Enter a code';
-const key_button = 'Use scanned key';
-const choose_file = 'Choose file';
-const key_remark = 'The code to type on the codetableau or code of a keytag';
-const generic_sub = 'Enter a ';
-const visits = 'Visits';
-const lastseen = 'Last seen';
-const action = 'action';
-const startdate = 'start date';
-const startdate_remark = 'Before this date the key/code is invalid (empty is for ever)';
-const enddate = 'end date';
-const enddate_remark = 'After this date the key/code is invalid (empty is for ever)';
-const maxvisits = 'maximum visits';
-const maxvisits_remark = 'After the maximum number of visits the key/code is invalid (empty is unlimited)';
-const remarks = 'remarks';
-const remarks_sub = 'Space for some notations';
-const search_controller_button = 'Search for controllers';
-const search_controller_remark = 'Search and select a controller to fill the fields below';
-const networkaddress = 'Network address';
-const choose = 'Choose...';
-const timezone_warning = 'Take care! The door will automatically open at chosen timezone';
-const timezone_remark = 'The door will automatically open at chosen timezone
-Cancel';
+const name = 'naam';
+const key = 'sleutelcode';
+const time = 'Tijd';
+const key_sub = 'Code invoeren';
+const key_button = 'Gebruik een gescande sleutel';
+const choose_file = 'Kies bestand';
+const key_remark = 'Typ de pincode of de W26-code van de tag';
+const generic_sub = 'Voer in ';
+const visits = 'Bezoeken';
+const lastseen = 'Laatst gezien';
+const action = 'actie';
+const startdate = 'begindatum';
+const startdate_remark = 'Voor deze datum is de code/tag ongeldig (leeg is voor altijd)';
+const enddate = 'einddatum';
+const enddate_remark = 'Na deze datum is de code/tag ongeldig (leeg is voor altijd)';
+const maxvisits = 'maximale aantal bezoeken';
+const maxvisits_remark = 'Na het maximum aantal bezoeken is de tag/code ongeldig (leeg is onbeperkt)';
+const remarks = 'opmerkingen';
+const remarks_sub = 'Ruimte voor opmerkingen';
+const search_controller_button = 'Zoeken naar controllers';
+const search_controller_remark = 'Zoek en selecteer een controller om de onderstaande velden te vullen';
+const networkaddress = 'Netwerkadres';
+const choose = 'Kies...';
+const timezone_warning = 'Let op! De deur zal automatisch openen op de gekozen tijdzone';
+const timezone_remark = 'De deur zal automatisch openen op de gekozen tijdzone
+Annuleren';
 const start = 'Start';
-const end = 'End';
-const weekdays = 'Weekdays';
-const weekdays2 = 'Days of the week';
-const value = 'Value';
-const button_new = 'Nieuwe';
+const end = 'Einde';
+const weekdays = 'Werkdagen';
+const weekdays2 = 'Dagen van de week';
+const value = 'Waarden';
+const button_new = 'Nieuw';
 const button_edit = 'Veranderen';
 const button_change = 'Wijzigen';
 const button_delete = 'Verwijderen';
-const button_confirm = 'Yes, Delete it!';
-const button_cancel = 'Cancel';
-const button_save = 'Save';
-const button_newrule = 'New Rule';
+const button_confirm = 'Ja, verwijder het!';
+const button_cancel = 'Annuleren';
+const button_save = 'Opslaan';
+const button_newrule = 'New regel';
 const button_downloadcsv = 'Download csv';
-const delete_confirm = 'Are you sure?';
-const delete_subtext = 'This item, will be deleted!';
-const message_slave = 'This is a slave controller';
-const message_factoryreset = 'The reset factory settings switch is on.<br>Factory settings were put back and the old configuration is deleted';
-const message_db_error = 'Something went wrong with the configuration.<br> Try to reset factory settings, by using the proper switch.';
-const message_unkown_error = 'Something went wrong';
+const button_logout = 'Log uit';
+const delete_confirm = 'Weet u het zeker?';
+const delete_subtext = 'Dit item zal worden verwijderd!';
+const message_slave = 'Dit is een slave controller';
+const message_factoryreset = 'De reset fabrieksinstellingen schakelaar staat aan.<br>Fabrieksinstellingen werden teruggezet en de oude configuratie werd gewist';
+const message_db_error = 'Er is iets misgegaan met de configuratie.<br> Probeer de fabrieksinstellingen te resetten, door de juiste schakelaar te gebruiken.';
+const message_unkown_error = 'Er is iets misgegaan';
 const dashboard_name = 'Dashboard';
 const dashboard_buttons = 'Deur open sturen';
 const dashboard_title = 'Deze controller heeft %s';
 const dashboard_text1 = '<div class=\'typography-line\'><p>
 <span>Hardware</span></p><ul>
-<li>2 relays outputs - to connect to doorlocks</li>
-<li>2 wiegand inputs - to connect to keypad or NFC reader</li>
-<li>2 alarm outputs - to connect to alarms</li>
-<li>2 monitor inputs - to connect to door monitors</li>
-<li>UTP connector - to connect to an LAN</li>
-<li>A voltage in - to connect 8-24VDC</li>
+<li>2 relais uitgangen - om de deursloten aan te sluiten</li>
+<li>2 Wiegand ingangen - om een codeslot of kaartlezer aan te sluiten</li>
+<li>2 alarm uitgangen - om het alarm aan te sluiten</li>
+<li>2 signaleringsingangen - om de signaleringen aan te sluiten</li>
+<li>UTP aansluiting - voor een LAN verbinding</li>
+<li>Voltage in - om 8-24VDC aan te sluiten</li>
 </ul><p></p></div>';
 const dashboard_text2 = '<div class=\'typography-line\'>
-<span>Configuration</span><ol>
-<li>Add doors from this Master controller, or from other Slave controllers</li>
-<li>Add timezones (24h and working hours are predefined)</li>
-<li>Create groups with timezones</li>
-<li>Create users and assign them to a group</li>
-<li>Add keypad code or NFC token to the user</li>
+<span>Configuratie</span><ol>
+<li>Voeg deuren toe van deze Master controller, of van andere Slave controllers</li>
+<li>Tijdzones toevoegen (24 uur en werkuren zijn vooraf gedefinieerd)</li>
+<li>Groepen met tijdzones maken</li>
+<li>Maak gebruikers aan en wijs ze toe aan een groep</li>
+<li>Voeg een code of tag toe aan de gebruiker</li>
 </ol></div>';
 public static function __callStatic($string, $args) {
     return vsprintf(constant("self::" . $string), $args);

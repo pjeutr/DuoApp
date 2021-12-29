@@ -1,6 +1,6 @@
 <?php 
 set('id', 7);
-set('title', 'Settings');
+set('title', L("settings"));
 ?>
 
 <div class="content">
@@ -59,7 +59,7 @@ set('title', 'Settings');
 
     <div class="flex-table row" role="rowgroup">
         <div class="flex-row-1 flex-cell first" role="cell"><?= $row->id ?></div>
-        <div class="flex-row-3 flex-cell flex-cell" role="cell"><?= $row->title ?></div>
+        <div class="flex-row-3 flex-cell flex-cell" role="cell"><?= L('setting_'.$row->name) ?></div>
         <div class="flex-row-4 flex-cell" role="cell">
             <input type="<?= $fieldType ?>" <?= $fieldAtrribute ?> class="form-control"
                 name="<?= $row->name ?>" value="<?= $row->value ?>"> 

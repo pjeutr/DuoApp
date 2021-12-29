@@ -1,95 +1,96 @@
 <?php class L {
-const language = 'Langue française';
-const user = 'user';
-const group = 'group';
-const door = 'door';
-const timezone = 'timezone';
-const report = 'report';
-const setting_door = 'Door open duration (in seconds)';
-const setting_buzzer = 'Sound buzzer when opening door';
-const setting_hostname = 'Hostname';
-const setting_password = 'Password';
-const setting_apb = 'APB(in seconds)';
-const setting_alarm = 'Hostname';
-const setting_upload = 'Upload configuration';
-const setting_download = 'Download configuration';
-const controller = 'controller';
-const edit = 'Edit';
-const add = 'Add';
-const new = 'New';
-const users = 'Users';
-const groups = 'Groups';
-const doors = 'Doors';
-const timezones = 'Timezones';
-const reports = 'Reports';
-const settings = 'Settings';
-const controllers = 'Controllers';
+const language = 'Langue';
+const user = 'utilisateur';
+const group = 'groupe';
+const door = 'porte';
+const timezone = 'fuseaux horaire';
+const report = 'rapport';
+const setting_door_open = 'Durée d\'ouverture de la porte (en secondes)';
+const setting_sound_buzzer = 'Le buzzer retentit lorsque la porte est ouverte';
+const setting_hostname = 'Nom d\'hôte';
+const setting_password = 'Mot de passe';
+const setting_apb = 'Anti-passback(en secondes)';
+const setting_alarm = 'Nom d\'hôte';
+const setting_upload = 'Télécharger la configuration';
+const setting_download = 'Télécharger la configuration';
+const controller = 'contrôleur';
+const edit = 'Modifier';
+const add = 'Ajouter';
+const new = 'Nouveau';
+const users = 'Utilisateurs';
+const groups = 'Groupes';
+const doors = 'Portes';
+const timezones = 'Fuseaux horaires';
+const reports = 'Rapports';
+const settings = 'Paramètres';
+const controllers = 'Contrôleurs';
 const id = 'id';
-const name = 'name';
-const key = 'keycode';
-const time = 'Time';
-const key_sub = 'Enter a code';
-const key_button = 'Use scanned key';
-const choose_file = 'Choose file';
-const key_remark = 'The code to type on the codetableau or code of a keytag';
-const generic_sub = 'Enter a ';
-const visits = 'Visits';
-const lastseen = 'Last seen';
+const name = 'nom';
+const key = 'code clé';
+const time = 'Temps';
+const key_sub = 'Entrer un code';
+const key_button = 'Utiliser une clé scannée';
+const choose_file = 'Choisir le fichier';
+const key_remark = 'Tapez le code ou le code W26 de balise';
+const generic_sub = 'Saisissez un ';
+const visits = 'Visites';
+const lastseen = 'Dernière vue';
 const action = 'action';
-const startdate = 'start date';
-const startdate_remark = 'Before this date the key/code is invalid (empty is for ever)';
-const enddate = 'end date';
-const enddate_remark = 'After this date the key/code is invalid (empty is for ever)';
-const maxvisits = 'maximum visits';
-const maxvisits_remark = 'After the maximum number of visits the key/code is invalid (empty is unlimited)';
-const remarks = 'remarks';
-const remarks_sub = 'Space for some notations';
-const search_controller_button = 'Search for controllers';
-const search_controller_remark = 'Search and select a controller to fill the fields below';
-const networkaddress = 'Network address';
-const choose = 'Choose...';
-const timezone_warning = 'Take care! The door will automatically open at chosen timezone';
-const timezone_remark = 'The door will automatically open at chosen timezone
-Cancel';
-const start = 'Start';
-const end = 'End';
-const weekdays = 'Weekdays';
-const weekdays2 = 'Days of the week';
-const value = 'Value';
-const button_new = 'New';
-const button_edit = 'Edit';
-const button_change = 'Change';
-const button_delete = 'Delete';
-const button_confirm = 'Yes, Delete it!';
-const button_cancel = 'Cancel';
-const button_save = 'Save';
-const button_newrule = 'New Rule';
-const button_downloadcsv = 'Download csv';
-const delete_confirm = 'Are you sure?';
-const delete_subtext = 'This item, will be deleted!';
-const message_slave = 'This is a slave controller';
-const message_factoryreset = 'The reset factory settings switch is on.<br>Factory settings were put back and the old configuration is deleted';
-const message_db_error = 'Something went wrong with the configuration.<br> Try to reset factory settings, by using the proper switch.';
-const message_unkown_error = 'Something went wrong';
-const dashboard_name = 'Dashboard';
-const dashboard_buttons = 'Deur open sturen';
-const dashboard_title = 'This controller has %s';
+const startdate = 'date d\'entrée en vigueur';
+const startdate_remark = 'Avant cette date, le code/la balise n\'est pas valable (vide pour toujours).';
+const enddate = 'date de fin';
+const enddate_remark = 'Après cette date, le code/la balise n\'est pas valable (vide pour toujours)';
+const maxvisits = 'nombre maximum de visites';
+const maxvisits_remark = 'Après le nombre maximum de visites, la balise/le code n\'est plus valable (le vide est illimité)';
+const remarks = 'remarques';
+const remarks_sub = 'Espace pour les remarques';
+const search_controller_button = 'Recherche de contrôleurs';
+const search_controller_remark = 'Recherchez et sélectionnez un contrôleur pour remplir les champs ci-dessous';
+const networkaddress = 'Adresse du réseau';
+const choose = 'Choisissez...';
+const timezone_warning = 'Attention! La porte s\'ouvrira automatiquement à la fuseaux horaires';
+const timezone_remark = 'La porte s\'ouvrira automatiquement à la fuseaux horaires
+Annuler';
+const start = 'Commencer';
+const end = 'Fin';
+const weekdays = 'Jours ouvrables';
+const weekdays2 = 'Jours de la semaine';
+const value = 'Valeurs';
+const button_new = 'Nouveau';
+const button_edit = 'Modifier';
+const button_change = 'Changez';
+const button_delete = 'Supprimer';
+const button_confirm = 'YOui, supprimez-le !';
+const button_cancel = 'Annuler';
+const button_save = 'Sauver';
+const button_newrule = 'Nouvelle règle';
+const button_downloadcsv = 'Télécharger csv';
+const button_logout = 'Se déconnecter';
+const delete_confirm = 'Vous êtes sûr ?';
+const delete_subtext = 'Cet élément sera supprimé !';
+const message_slave = 'Il s\'agit d\'un contrôleur esclave';
+const message_factoryreset = 'L\'interrupteur de réinitialisation des paramètres d\'usine est activé.<br>Les paramètres d\'usine ont été remis en place et l\'ancienne configuration est supprimée.';
+const message_db_error = 'Quelque chose s\'est mal passé avec la configuration.<br> Essayez de réinitialiser les paramètres d\'usine, en utilisant le commutateur approprié.';
+const message_unkown_error = 'Quelque chose a mal tourné';
+const dashboard_name = 'Tableau de bord';
+const dashboard_buttons = 'Envoyer la porte ouverte';
+const dashboard_title = 'Ce contrôleur a %s';
 const dashboard_text1 = '<div class=\'typography-line\'><p>
 <span>Hardware</span></p><ul>
-<li>2 relays outputs - to connect to doorlocks</li>
-<li>2 wiegand inputs - to connect to keypad or NFC reader</li>
-<li>2 alarm outputs - to connect to alarms</li>
-<li>2 monitor inputs - to connect to door monitors</li>
-<li>UTP connector - to connect to an LAN</li>
-<li>A voltage in - to connect 8-24VDC</li>
+<li>2 sorties relais - pour se connecter aux serrures de portes</li>
+<li>2 entrées de Wiegand - pour se connecter au clavier à code ou au lecteur de badges</li>
+<li>2 sorties d\'alarme - pour se connecter aux alarmes</li>
+<li>2 sortie de signalisation - pour se connecter aux signalisations de porte</li>
+<li>Connecteur UTP - pour se connecter à un LAN</li>
+<li>Voltage en - pour connecter 8-24VDC</li>
 </ul><p></p></div>';
 const dashboard_text2 = '<div class=\'typography-line\'>
 <span>Configuration</span><ol>
-<li>Add doors from this Master controller, or from other Slave controllers</li>
-<li>Add timezones (24h and working hours are predefined)</li>
-<li>Create groups with timezones</li>
-<li>Create users and assign them to a group</li>
-<li>Add keypad code or NFC token to the user</li>
+<li>Ajouter des portes à partir de ce contrôleur Maître ou d\'autres contrôleurs Esclaves.</li>
+<li>Ajouter des fuseaux horaires (24h et les heures de travail sont prédéfinies)</li>
+<li>Créer des groupes avec des fuseaux horaires</li>
+<li>Créer des utilisateurs et les affecter à un groupe</li>
+<li>Ajouter un code ou une balise à l\'utilisateur</li>
 </ol></div>';
 public static function __callStatic($string, $args) {
     return vsprintf(constant("self::" . $string), $args);
