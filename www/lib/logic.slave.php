@@ -232,7 +232,8 @@ function resolveInput($gpioPath) {
 }
 
 function getInputValue($gpioPath) {
-    return exec("cat ".$gpioPath);
+    return file_get_contents($gpioPath);
+    //return exec("cat ".$gpioPath);
 }
 
 
@@ -291,7 +292,8 @@ function setGPIO($gpio, $state) {
     return 1;    
 }
 function getGPIO($gpio) {
-    $v = exec("cat /sys/class/gpio/gpio".$gpio."/value");
+    $v = file_get_contents("/sys/class/gpio/gpio".$gpio."/value");
+    //$v = exec("cat /sys/class/gpio/gpio".$gpio."/value");
     //mylog("getGPIO ".$gpio."=".$v);
     return $v;
 }
