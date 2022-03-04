@@ -255,7 +255,7 @@ function configureGPIO() {
     option('session', 'Maasland_Match_App');  
 
     //web loads dynamically scripts need to set this manualy
-    mylog("H=".$hardwareVersion);
+    mylog("Hardware version=".$hardwareVersion);
     if($hardwareVersion == 1) {
         require_once '/maasland_app/www/db/gvar.match2.php';
     } else {
