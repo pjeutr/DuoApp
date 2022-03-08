@@ -24,10 +24,11 @@ function inputs() {
     ];
 }
 
+//1,2 are the enum for wiegand, gave problems when used
 function getInputArray() {
     return [
-        1 => "/sys/class/gpio/gpio".GVAR::$GPIO_MASTER."/value",
-        2 => "/sys/class/gpio/gpio".GVAR::$GPIO_FIRMWARE."/value",
+        //1 => "/sys/class/gpio/gpio".GVAR::$GPIO_MASTER."/value",
+        //2 => "/sys/class/gpio/gpio".GVAR::$GPIO_FIRMWARE."/value",
         3 => "/sys/class/gpio/gpio".GVAR::$GPIO_BUTTON1."/value", 
         4 => "/sys/class/gpio/gpio".GVAR::$GPIO_BUTTON2."/value",
         5 => "/sys/class/gpio/gpio".GVAR::$GPIO_DOORSTATUS1."/value", 
