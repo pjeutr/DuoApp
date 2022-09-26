@@ -72,7 +72,7 @@ function before($route = array())
     //calls from master,slave or tests
     if((strpos(request_uri(), "api") !== false) ||
     (strpos(request_uri(), "tests") !== false) ||
-    (strpos(request_uri(), "status") !== false)) { 
+    (strpos(request_uri(), "manage") !== false)) { 
       if(true) { //from master || local || ip in controllers //allow cli
         //TODO authentication 
         //apiCalls, do nothing, pass through
@@ -238,7 +238,8 @@ function cleanup_page() {
 dispatch_get('manage/update_firmware',  'update_firmware');
 function update_firmware() {
   echo("firmware update");
-        $r = shell_exec("/maasland_app/scripts/git_replace.sh");
+        $r = shell_exec("/maasland_app/scripts/git_replace_private.sh");
+        //$r = shell_exec("/maasland_app/scripts/git_replace.sh");
         mylog($r);
     return "<pre>".($r)."</pre>";
 }
