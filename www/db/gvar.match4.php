@@ -18,7 +18,7 @@ class GVAR
     public static $RD1_GLED_PIN = 3; //NUC980_PA3  //reader1 gled output 
     public static $RD2_GLED_PIN = 11; //NUC980_PA11  //reader2 gled output
     public static $BUZZER_PIN = 138; //NUC980_PE10  //buzzer output
-    public static $RUNNING_LED = 40; //NUC980_PB8  //running led
+    public static $RUNNING_LED = 40; //NUC980_PB8  //running led - 0 = on / 1 = off
     public static $OUT12V_PIN = 79; //NUC980_PC15  //output 12v control output
 
     //inputs
