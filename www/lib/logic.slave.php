@@ -179,7 +179,7 @@ function getMasterControllerIP() {
         }
         if(empty($masterControllerIp)) {            
             error_log("ERROR: Master Controller not found :".json_encode($result)."\n");
-            blinkMessageLed(2);
+            blinkMessageLed(5);
         }
         return $masterControllerIp;
     } else {

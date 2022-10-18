@@ -40,6 +40,15 @@ if(checkIfFactoryReset()){
 //create THE eventloop. (get's instance, or creates new)
 $loop = React\EventLoop\Loop::get();
 
+//check if network is availabel
+$localIP = exec("ifconfig eth0 | awk '/inet addr/ {gsub(\"addr:\", \"\", $2); print $2}'");
+if( empty($localIP) ) {
+	echo "No network connection\n";
+	blinkMessageLed(1);
+} else {
+	echo "Network ip=$localIP\n";
+}
+
 if( checkIfMaster() ) {
 	echo "Master input script loaded\n";
 	require_once '/maasland_app/scripts/coapListenerMaster.php';
