@@ -260,7 +260,6 @@ function configureGPIO() {
     }
     mylog("Activate wiegand readers");
     setGPIO(GVAR::$OUT12V_PIN, 1);
-    setGPIO(GVAR::$RUNNING_LED, 0); //0 = on / 1 = off
 
     //we need it, might as well get it already
     getMasterControllerIP();

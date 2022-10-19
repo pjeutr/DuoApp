@@ -47,6 +47,8 @@ if( empty($localIP) ) {
 	blinkMessageLed(1);
 } else {
 	echo "Network ip=$localIP\n";
+	//turn on running led
+	exec("echo 0 >/sys/class/gpio/gpio".GVAR::$RUNNING_LED."/value");
 }
 
 if( checkIfMaster() ) {
