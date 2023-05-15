@@ -133,7 +133,7 @@ $server->on( 'request', function( $req, $res, $handler ) {
 */
 
 $interval = 10;
-$timer = React\EventLoop\Loop::addPeriodicTimer($interval, function () use () {
+$timer = React\EventLoop\Loop::addPeriodicTimer($interval, function () {
 
 	$doors = find_doors();
 	$promises = [];

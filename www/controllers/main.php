@@ -4,6 +4,8 @@ require "lib/csv-9.5.0/autoload.php";
 use League\Csv\Writer;
 use League\Csv\Reader;
 
+$actor = "WebAdmin";
+
 # GET /
 function main_page() {
     return html('main.html.php');
@@ -103,7 +105,7 @@ function door_open() {
     $door = find_door_by_id($doorId);
     $controller = find_controller_by_id($controllerId);
     $result = openDoor($door, $controller);
-    saveReport("WebAdmin", $door->name);//."@".$controller->name);
+    saveReport($actor, $door->name);//."@".$controller->name);
     return (json(array($result)));
 }
 function switchOutput() {
@@ -114,6 +116,17 @@ function switchOutput() {
     $controller = find_controller_by_id($controllerId);
     $result = changeOutputState($outputEnum, $controller, $door, $state);
     return (json(array($result)));
+}
+function checkCleanupReports() {
+    //delete rows older than x days in reports
+    $days = 7;
+    $action = cleanupReports($days);
+    mylog($action);
+    if($action > 0) {
+        saveReport($actor, "Older than $days days. $action rows deleted in reports.");
+    }
+    $result = getOutputStatus($outputId);
+    return json($result);
 }
 function outputStatus() {
     $outputId = filter_var(params('door'), FILTER_VALIDATE_INT);

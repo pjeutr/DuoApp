@@ -101,42 +101,7 @@ if($now->format('H:i') == "04:00") { //every night at 2, needs timezone adjustme
 	}
 }
 
-/* Functionality moved to inputListener
 
-$doors = find_doors();
-$promises = [];
-
-foreach ($doors as $door) {
-	mylog("Cron: Contoller=".$door->controller_id.":".$door->cname."  Door=".$door->enum.":".$door->id.":".$door->name." tz=".$door->timezone_id);
-
-	//has this door a timezone assigned?
-	if( $door->timezone_id ) {
-		//check if the door needs to be open or close
-		$open = checkDoorSchedule($door) ? 1 : 0;
-
-		//send required state to the door
-		$promises[] = operateDoor($door, $open)->then(
-	        function ($value) {
-				// Deferred resolved, do something with $value
-				mylog("Promise return=".$value);
-				return $value;
-	        }
-	    );
-	}
-}
-
-\React\Promise\all($promises)->then(function($value) use ($lock_file)  {
-    mylog("remove lock");
-    mylog($value);
-	// All done; we blank the PID file and explicitly release the lock 
-	// (although this should be unnecessary) before terminating.
-	ftruncate($lock_file, 0);
-	flock($lock_file, LOCK_UN);
-	mylog("lock removed");
-});
-
-
-*/
 
 
 
