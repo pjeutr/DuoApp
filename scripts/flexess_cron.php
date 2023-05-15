@@ -91,6 +91,7 @@ if($now->format('H:i') == "04:00") { //every night at 2, needs timezone adjustme
 // 	}
 // 	//check if listener still running?
 
+	//TODO make webcall to do this, web seems to think sqlite db is damaged after vacuum
 	//delete rows older than x days in reports
 	$days = 7;
 	$action = cleanupReports($days);
@@ -100,6 +101,7 @@ if($now->format('H:i') == "04:00") { //every night at 2, needs timezone adjustme
 	}
 }
 
+/* Functionality moved to inputListener
 
 $doors = find_doors();
 $promises = [];
@@ -134,7 +136,7 @@ foreach ($doors as $door) {
 });
 
 
-
+*/
 
 
 

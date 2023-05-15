@@ -128,3 +128,32 @@ $server->on( 'request', function( $req, $res, $handler ) {
 });
 
 
+/*
+* Check if there are doors scheduled to open. (previously done by crontab)
+*/
+
+$interval = 10;
+$timer = React\EventLoop\Loop::addPeriodicTimer($interval, function () use () {
+
+	$doors = find_doors();
+	$promises = [];
+
+	foreach ($doors as $door) {
+		mylog("Cron: Contoller=".$door->controller_id.":".$door->cname."  Door=".$door->enum.":".$door->id.":".$door->name." tz=".$door->timezone_id);
+
+		//has this door a timezone assigned?
+		if( $door->timezone_id ) {
+			//check if the door needs to be open or close
+			$open = checkDoorSchedule($door) ? 1 : 0;
+
+			//send required state to the door
+			$promises[] = operateDoor($door, $open)->then(
+		        function ($value) {
+					// Deferred resolved, do something with $value
+					mylog("Promise return=".$value);
+					return $value;
+		        }
+		    );
+		}
+	}
+});
