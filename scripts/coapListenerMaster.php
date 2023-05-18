@@ -128,13 +128,33 @@ $server->on( 'request', function( $req, $res, $handler ) {
 });
 
 
+
 /*
-* Check if there are doors scheduled to open. (previously done by crontab)
+* Do cronlike stuff, previously done by crontab
 */
-
-$interval = 10;
+$interval = 60;
 $timer = React\EventLoop\Loop::addPeriodicTimer($interval, function () {
+	$now = new DateTime();
+	$actor = "Scheduled"; 
+	$action = "Systemcheck ";
+	
+	/*
+	* Check reports and delete old ones and vacuum. (previously done by crontab)
+	*/
+	//if($now->format('H:i') == "04:00") { //every night at 2, needs timezone adjustment so 4
+	if($now->format('i') == 45) { //every hour
+		//delete rows older than x days in reports
+		$days = 7;
+		$action = cleanupReports($days);
+		mylog($action);
+		if($action > 0) {
+			saveReport($actor, "Older than $days days. $action rows deleted in reports.");
+		}
+	}
 
+	/*
+	* Check if there are doors scheduled to open. (previously done by crontab)
+	*/
 	$doors = find_doors();
 	$promises = [];
 
