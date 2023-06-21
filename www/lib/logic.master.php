@@ -89,6 +89,7 @@ function handleInput($from, $input, $keycode) {
             $result = $action;
             break;
         default:
+            error_log("illegal Controller=".$controller->name." input=".$input." keycode=".$keycode);
             $action = "illegal";
             break;
     }    
@@ -274,8 +275,11 @@ function handleUserAccess($user, $readerId, $controller) {
         return "Maximum visits reached:  visits = ".$user->max_visits;
     }
     //Check start/end date for user 
-    $now = new DateTime();
+    $now = new DateTime(); //now in UTC
+    $nowLocal = new DateTimeZone( getTimezone() ); //now on local time, use only to compare with user set datetime in the gui/db
+
     mylog($now);
+    mylog($nowLocal);
     $startDate = DateTime::createFromFormat(getDateTimeFormat(), $user->start_date, new DateTimeZone(getTimezone() ) );
     mylog($startDate);
     // $diff = $now->diff($startDate);
@@ -329,8 +333,9 @@ function handleUserAccess($user, $readerId, $controller) {
     //check if it is the right time
     $begin = new DateTime($tz->start);
     $end = new DateTime($tz->end);
-    if ($now < $begin || $now > $end) {
-        return "Time of the day restriction: ".$now->format('H:m')." is not between ".$tz->start." and ".$tz->end;
+
+    if ($nowLocal < $begin || $nowLocal > $end) {
+        return "Time of the day restriction: ".$now->format('H:i')." is not between ".$tz->start." and ".$tz->end;
     }
     
     //update attendance list, keeping score of who is in or out.
