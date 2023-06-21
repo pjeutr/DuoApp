@@ -276,7 +276,7 @@ function handleUserAccess($user, $readerId, $controller) {
     }
     //Check start/end date for user 
     $now = new DateTime(); //now in UTC
-    $nowLocal = new DateTimeZone( getTimezone() ); //now on local time, use only to compare with user set datetime in the gui/db
+    $nowLocal = new DateTime("now", new DateTimeZone( getTimezone() ) ); //now on local time, use only to compare with user set datetime in the gui/db
 
     mylog($now);
     mylog($nowLocal);
@@ -335,7 +335,7 @@ function handleUserAccess($user, $readerId, $controller) {
     $end = new DateTime($tz->end);
 
     if ($nowLocal < $begin || $nowLocal > $end) {
-        return "Time of the day restriction: ".$now->format('H:i')." is not between ".$tz->start." and ".$tz->end;
+        return "Time of the day restriction: ".$nowLocal->format('H:i')." is not between ".$tz->start." and ".$tz->end;
     }
     
     //update attendance list, keeping score of who is in or out.
