@@ -277,9 +277,8 @@ function handleUserAccess($user, $readerId, $controller) {
     //Check start/end date for user 
     $now = new DateTime(); //now in UTC
     $nowLocal = new DateTime("now", new DateTimeZone( getTimezone() ) ); //now on local time, use only to compare with user set datetime in the gui/db
-
     mylog($now);
-    mylog($nowLocal);
+
     $startDate = DateTime::createFromFormat(getDateTimeFormat(), $user->start_date, new DateTimeZone(getTimezone() ) );
     mylog($startDate);
     // $diff = $now->diff($startDate);
@@ -331,13 +330,21 @@ function handleUserAccess($user, $readerId, $controller) {
     }
 
     //check if it is the right time
-    $begin = new DateTime($tz->start);
-    $end = new DateTime($tz->end);
+    $begin = DateTime::createFromFormat(getTimeFormat(), $tz->start, new DateTimeZone(getTimezone() ) );
+    $end = DateTime::createFromFormat(getTimeFormat(), $tz->end, new DateTimeZone(getTimezone() ) );
 
-    if ($nowLocal < $begin || $nowLocal > $end) {
-        return "Time of the day restriction: ".$nowLocal->format('H:i')." is not between ".$tz->start." and ".$tz->end;
+    // mylog($nowLocal);
+    // mylog("begin-end");
+    // mylog($begin);
+    // mylog($end);
+
+    if ($nowLocal < $begin) {
+        return "Time of the day restriction: ".$nowLocal->format('H:i')." is before ".$tz->start;
     }
-    
+    if ($nowLocal > $end) {
+        return "Time of the day restriction: ".$nowLocal->format('H:i')." is after ".$tz->end;
+    }
+
     //update attendance list, keeping score of who is in or out.
     if(useLedgerMode()) {
         update_ledger($user, $readerId);
