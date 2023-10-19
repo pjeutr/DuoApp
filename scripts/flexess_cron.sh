@@ -24,3 +24,8 @@ fi
 #     logger "WARNING:HEAVY LOAD!"
 # fi
 
+#log memory if it's to low
+if [ $(awk '/^MemFree:/ { print $2; }' /proc/meminfo) -lt 999 ]; then
+    logger "WARNING:low memory"
+    logger `grep Mem /proc/meminfo` 
+fi

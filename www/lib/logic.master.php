@@ -384,10 +384,9 @@ function checkDoorSchedule($door) {
             $end = new DateTime($tz->end, new DateTimeZone(getTimezone()));
             mylog($begin);
             mylog($end);
-            return isBetween($begin, $end, $now)
-            // if ($now >= $begin && $now <= $end) {
-            //     return true;
-            // }
+            if(isBetween($begin, $end, $now)) {
+                return true;
+            }
         }
     }
     return false;
