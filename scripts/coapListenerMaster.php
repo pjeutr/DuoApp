@@ -91,7 +91,7 @@ $wiegandObserver->watch('/dev/wiegand');
 */
 
 $server = new PhpCoap\Server\Server();
-$server->receive( 5683, '0.0.0.0' );
+$server->receiveUDP( 5683, '0.0.0.0' );
 
 $server->on( 'request', function( $req, $res, $handler ) {
 	$o = $req->GetOptions();
