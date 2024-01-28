@@ -25,30 +25,29 @@ configLocalDB();
 /* 
 * Outgoing calls to master
 */
-function callApi($input, $data) {
+function callApi($input, $key) {
 	//coap-client -m get coap://192.168.178.179/x/3
 	$master = getMasterControllerIP();
 	if($master) {
-	    $url = "coap://".$master."/x_".$input."_".$data;
+	    $url = "coap://".$master."/x_".$input."_".$key;
 	    mylog("coapCall:".$url);
 	    //request
 		$client = new PhpCoap\Client\Client();
-		$client->get($url, function( $data ) {
-			if($data == -1) {
-	            error_log("coapCall, Master controller could not be reached.");
-	            //Sound 4 beeps on the slave controller to warn the user.
-	            beepMessageBuzzer(2);
-	            handleInputLocally($input, $data);
+		$client->get($url, function( $result ) use ($input, $key) {
+			if($result == -1) {
+				error_log("coapCall, Master controller could not be reached.");
+				//Sound 4 beeps on the slave controller to warn the user.
+				beepMessageBuzzer(2);
+				//Finish the action with Local data
+				//This emergency handling, local data must have been replicated from the master
+				handleInputLocally($input, $key);
 	        } else {
-	            mylog("coapCall, return=".json_encode($data));
+	            mylog("coapCall, return=".json_encode($result));
 	        }
-	        return $data;
+	        return $result;
 		});
 	} else {
 		error_log("coapCall, Master controller unkown.");
-		//Finish the action with Local data
-		//This emergency handling, local data must have been replicated from the master
-		handleInputLocally($input, $data);
 	}
 }
 

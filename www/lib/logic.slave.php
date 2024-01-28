@@ -126,7 +126,7 @@ function getOutputStatus($outputEnum) {
 */
 function handleInputLocally($input, $keycode) {
     //$controller = find_controller_by_ip($ip);
-    $controller = find_controller_by_id(1);
+    $controller = find_controller_by_remarks('this_is_me');
     mylog(json_encode($controller));
     if(empty($controller)) {
         saveReport($from, $input, "unkown controller");
@@ -156,7 +156,8 @@ function handleInputLocally($input, $keycode) {
             $inputName = ($input == 3) ? "button_1":"button_2";
             $door = find_door_for_input_device($inputName, $controller->id);
             $action = $inputName.":".$door->name;
-            $result = openDoor($door, $controller);
+            $result = activateOutput($door->id, $duration, []);
+            //$result = openDoor($door, $controller);
             break;
         default:
             error_log("illegal Controller=".$controller->name." input=".$input." keycode=".$keycode);
@@ -182,6 +183,9 @@ function handleUserAccessLocally($user, $readerId, $controller) {
 
     //Determine what door to open
     $door = find_door_for_input_device("reader_".$readerId, $controller->id);
+    mylog($door);
+    mylog("find_timezone_by_group_id group_id=".$user->group_id);
+    mylog("find_timezone_by_group_id door_id=".$door->id);
 
     //check if the group/user has access for this door
     $tz = find_timezone_by_group_id($user->group_id, $door->id);

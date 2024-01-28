@@ -145,18 +145,24 @@ function updateNetwork($hostname) {
 
 function settings_replicate() {
     $path = "/maasland_app/www/db";
-    //make subdatabase
+    //delete previous clone
+    $cmd = "rm $path/clone.db";
+    mylog($cmd);
+    //clone database
     $cmd = "sqlite3 $path/prod.db '.dump users groups doors rules controllers timezones settings' | sqlite3 $path/clone.db";
     mylog($cmd);
     $result = shell_exec($cmd);
     mylog($result);
 
-    $records = "name,reader_1,reader_2,button_1,button_2,sensor_1,sensor_2";
     $controllers = find_controllers();
     foreach ($controllers as $controller) {
         $result .= "<hr>slave ip=" . $controller->ip."<br>";
-        //Update master record with current slave data
-        $sql = "UPDATE controllers SET($records, remarks) = (SELECT $records, ip FROM controllers WHERE ip = \"$controller->ip\") WHERE ip = \"127.0.0.1\"";
+        //Clean previous remarks
+        $cmd = "sqlite3 $path/clone.db 'UPDATE controllers SET remarks = null;'";
+        exec($cmd.' 2>&1',$output);
+        $result .= json_encode($output);
+        //Mark current slave 
+        $sql = "UPDATE controllers SET remarks = \"this_is_me\" WHERE ip = \"$controller->ip\"";
         $cmd = "sqlite3 $path/clone.db '$sql';";
         $result .= $cmd;
         exec($cmd.' 2>&1',$output);
@@ -167,7 +173,7 @@ function settings_replicate() {
         //scp doesn't work on busybox
         //$cmd = "scp clone.db -f /root/.ssh/id_rsa root@192.168.178.41:/maasland_app/www/db/"; 
         //StrictHostKeychecking doesn't work with dropbear, so we use dbclient
-        $cmd = "cat $path/clone.db | dbclient -i /root/.ssh/id_rsa root@192.168.178.41 'cat > $path/remote.db'";
+        $cmd = "cat $path/clone.db | dbclient -i /root/.ssh/id_rsa root@$controller->ip 'cat > $path/remote.db'";
         $result .= "<br>".$cmd."<br>";
         exec($cmd.' 2>&1',$output);
         $result .= json_encode($output);
