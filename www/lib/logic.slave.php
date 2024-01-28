@@ -127,6 +127,7 @@ function getOutputStatus($outputEnum) {
 function handleInputLocally($input, $keycode) {
     //$controller = find_controller_by_ip($ip);
     $controller = find_controller_by_remarks('this_is_me');
+    $duration=find_setting_by_name("door_open");
     mylog(json_encode($controller));
     if(empty($controller)) {
         saveReport($from, $input, "unkown controller");
@@ -156,7 +157,7 @@ function handleInputLocally($input, $keycode) {
             $inputName = ($input == 3) ? "button_1":"button_2";
             $door = find_door_for_input_device($inputName, $controller->id);
             $action = $inputName.":".$door->name;
-            $result = activateOutput($door->id, $duration, []);
+            $result = activateOutput($door->enum, $duration, []);
             //$result = openDoor($door, $controller);
             break;
         default:
@@ -199,7 +200,7 @@ function handleUserAccessLocally($user, $readerId, $controller) {
     //open the door 
     //$msg = openDoor($door, $controller);
     $duration=find_setting_by_name("door_open");
-    $msg = activateOutput($door->id, $duration, []);
+    $msg = activateOutput($door->enum, $duration, []);
     $msg = $door->name;//."@".$controller->name;
     return $msg;    
 }
