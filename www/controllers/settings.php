@@ -146,18 +146,33 @@ function updateNetwork($hostname) {
 function settings_replicate() {
     $path = "/maasland_app/www/db";
     //make subdatabase
-    $cmd = "sqlite3 $path/prod.db '.dump users groups doors controllers timezones settings' | sqlite3 $path/clone.db";
-    exec($cmd);
+    $cmd = "sqlite3 $path/prod.db '.dump users groups doors rules controllers timezones settings' | sqlite3 $path/clone.db";
     mylog($cmd);
+    $result = shell_exec($cmd);
+    mylog($result);
 
-    //ssh -i /root/.ssh/id_rsa root@192.168.178.41
-    //scp doesn't work on busybox
-    //$cmd = "scp clone.db -f /root/.ssh/id_rsa root@192.168.178.41:/maasland_app/www/db/"; 
-    $cmd = "cat $path/clone.db | ssh -i /root/.ssh/id_rsa root@192.168.178.41 'cat > $path/remote.db'";
-    exec($cmd);
-    mylog($cmd);
+    $records = "name,reader_1,reader_2,button_1,button_2,sensor_1,sensor_2";
+    $controllers = find_controllers();
+    foreach ($controllers as $controller) {
+        $result .= "<hr>slave ip=" . $controller->ip."<br>";
+        //Update master record with current slave data
+        $sql = "UPDATE controllers SET($records, remarks) = (SELECT $records, ip FROM controllers WHERE ip = \"$controller->ip\") WHERE ip = \"127.0.0.1\"";
+        $cmd = "sqlite3 $path/clone.db '$sql';";
+        $result .= $cmd;
+        exec($cmd.' 2>&1',$output);
+        $result .= json_encode($output);
+        //Copy db to slave
 
-    return "replicate";
+        //ssh -i /root/.ssh/id_rsa root@192.168.178.41
+        //scp doesn't work on busybox
+        //$cmd = "scp clone.db -f /root/.ssh/id_rsa root@192.168.178.41:/maasland_app/www/db/"; 
+        //StrictHostKeychecking doesn't work with dropbear, so we use dbclient
+        $cmd = "cat $path/clone.db | dbclient -i /root/.ssh/id_rsa root@192.168.178.41 'cat > $path/remote.db'";
+        $result .= "<br>".$cmd."<br>";
+        exec($cmd.' 2>&1',$output);
+        $result .= json_encode($output);
+    }
+    return $result;
 }
 
 function settings_download() {

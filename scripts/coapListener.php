@@ -8,6 +8,20 @@
 * - Listen for commands from the master (activate/output/status)
 */
 
+//these imports are only for handleInputLocally 
+require_once '/maasland_app/www/lib/db.php';
+//load models for used db methods handleInputLocally
+require_once '/maasland_app/www/lib/model.user.php';
+//require_once '/maasland_app/www/lib/model.ledger.php';
+require_once '/maasland_app/www/lib/model.settings.php';
+require_once '/maasland_app/www/lib/model.door.php';
+require_once '/maasland_app/www/lib/model.controller.php';
+require_once '/maasland_app/www/lib/model.timezone.php';
+require_once '/maasland_app/www/lib/model.rule.php';
+
+//initialize database connection
+configLocalDB();
+
 /* 
 * Outgoing calls to master
 */
@@ -24,6 +38,7 @@ function callApi($input, $data) {
 	            error_log("coapCall, Master controller could not be reached.");
 	            //Sound 4 beeps on the slave controller to warn the user.
 	            beepMessageBuzzer(2);
+	            handleInputLocally($input, $data);
 	        } else {
 	            mylog("coapCall, return=".json_encode($data));
 	        }
@@ -31,6 +46,9 @@ function callApi($input, $data) {
 		});
 	} else {
 		error_log("coapCall, Master controller unkown.");
+		//Finish the action with Local data
+		//This emergency handling, local data must have been replicated from the master
+		handleInputLocally($input, $data);
 	}
 }
 

@@ -248,6 +248,30 @@ function option_tag($id, $title, $act_id) {
     return $s;
 }
 
+/* 
+*   User Role functions  
+*/
+function isAdmin() {
+    return isset($_SESSION["login"]) && ($_SESSION['login'] == "admin" || $_SESSION['login'] == "super");    
+}
+function isSuper(){
+    return isset($_SESSION["login"]) && $_SESSION['login'] == "super";
+}
+function showOpenCloseButtons($door){
+    //if user isAdmin show extra buttons
+    if (! isAdmin()) return ""; 
+
+    $open = L("open");
+    $close = L("close");
+    return <<<EOT
+<button class="btn btn-warning" type="button" 
+    onclick="app.ajaxCall('/?/output/$door->controller_id/$door->enum/1')">$open</button>
+<button class="btn btn-info" type="button" 
+    onclick="app.ajaxCall('/?/output/$door->controller_id/$door->enum/0')">$close</button>
+EOT;
+
+}
+
 function mdate($format = 'u', $utimestamp = null) {
     if (is_null($utimestamp))
         $utimestamp = microtime(true);
@@ -302,6 +326,19 @@ function configDB() {
     */
 
     option('env', $env);
+    option('dsn', $dsn);
+    option('db_conn', $db);   
+}
+function configLocalDB() {
+    $development = Arrilot\DotEnv\DotEnv::get('APP_DEVELOPMENT', false);
+
+    mylog("Local DBinit");
+    $dsn = 'sqlite:/maasland_app/www/db/remote.db';
+    mylog(json_encode($dsn));
+
+    $db = new PDO($dsn);
+    $db->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
+
     option('dsn', $dsn);
     option('db_conn', $db);   
 }

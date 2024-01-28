@@ -360,16 +360,16 @@ $().ready(function() {
             console.log("Door:" +door+ "=" +result[door]);
             if(result[door]==="1") {
                 $( value ).html('<i alt="'+$tooltip+'" title="'+$tooltip+
-                '" class="fa fa-unlock-alt text-success"></i>'); 
+                '" class="fa fa-lg fa-unlock-alt text-success"></i>'); 
             } else {
                 $( value ).html('<i alt="'+$tooltip+'" title="'+$tooltip+
-                '" class="fa fa-lock text-warning"></i>'); 
+                '" class="fa fa-lg fa-lock text-warning"></i>'); 
             }
         }).fail(function(jqXHR, textStatus){
             //console.log(textStatus);
             if(textStatus === 'timeout')
             {     
-                $( value ).html('<i class="fa fa-times text-danger"></i>'); 
+                $( value ).html('<i class="fa fa-lg fa-times text-danger"></i>'); 
             }
         });
     });    
