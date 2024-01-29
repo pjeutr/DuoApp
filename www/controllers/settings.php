@@ -173,7 +173,7 @@ function settings_replicate() {
         //scp doesn't work on busybox
         //$cmd = "scp clone.db -f /root/.ssh/id_rsa root@192.168.178.41:/maasland_app/www/db/"; 
         //StrictHostKeychecking doesn't work with dropbear, so we use dbclient
-        $cmd = "cat $path/clone.db | dbclient -y -i /etc/dropbear/dropbear_ecdsa_host_key root@$controller->ip 'cat > $path/remote.db'";
+        $cmd = "cat $path/clone.db | dbclient -y -i /root/.ssh/id_rsa root@$controller->ip 'cat > $path/remote.db'";
         $result .= "<br>".$cmd."<br>";
         exec($cmd.' 2>&1',$output);
         $result .= json_encode($output);
