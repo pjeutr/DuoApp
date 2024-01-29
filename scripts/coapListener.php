@@ -48,6 +48,9 @@ function callApi($input, $key) {
 		});
 	} else {
 		error_log("coapCall, Master controller unkown.");
+		//Finish the action with Local data
+		//This emergency handling, local data must have been replicated from the master
+		handleInputLocally($input, $key);
 	}
 }
 
