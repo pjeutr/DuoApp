@@ -89,6 +89,16 @@ $flashMessage = flash_now();
                             <p><?php echo L::groups; ?></p>
                         </a>
                     </li>
+                    <li <?php echo ($id == 5) ? 'class="nav-item active"' : 'class="nav-item "' ?>>
+                        <a class="nav-link" href="./?/reports">
+                            <i class="nc-icon nc-notes"></i>
+                            <p><?php echo L::reports; ?></p>
+                        </a>
+                    </li>
+
+                    <!-- Admin menu -->
+                    <?php if( isAdmin() ) { ?>
+                    <hr>
                     <li <?php echo ($id == 3) ? 'class="nav-item active"' : 'class="nav-item "' ?>>
                         <a class="nav-link" href="./?/doors">
                             <i class="nc-icon nc-lock-circle-open"></i>
@@ -101,13 +111,6 @@ $flashMessage = flash_now();
                             <p><?php echo L::timezones; ?></p>
                         </a>
                     </li>
-                    <li <?php echo ($id == 5) ? 'class="nav-item active"' : 'class="nav-item "' ?>>
-                        <a class="nav-link" href="./?/reports">
-                            <i class="nc-icon nc-notes"></i>
-                            <p><?php echo L::reports; ?></p>
-                        </a>
-                    </li>
-
                     <?php if(useLedgerMode()) { ?>
                         <li <?php echo ($id == 6) ? 'class="nav-item active"' : 'class="nav-item "' ?>>
                             <a class="nav-link" href="./?/ledger">
@@ -123,25 +126,10 @@ $flashMessage = flash_now();
                             <p><?php echo L::settings; ?></p>
                         </a>
                     </li>
-
-                    <!-- Admin menu -->
-                    <?php if( isAdmin() ) { ?>
-                    <hr>
                     <li <?php echo ($id == 8) ? 'class="nav-item active"' : 'class="nav-item "' ?>>
                         <a class="nav-link" href="./?/network">
                             <i class="nc-icon nc-settings-tool-66"></i>
                             <p><?php echo L::network; ?></p>
-                        </a>
-                    </li>
-                    <?php } ?>
-
-                    <!-- Super menu -->
-                    <?php if( isSuper() ) { ?>
-                    <hr>
-                    <li <?php echo ($id == 11) ? 'class="nav-item active"' : 'class="nav-item "' ?>>
-                        <a class="nav-link" href="/admin/phpliteadmin.php">
-                            <i class="nc-icon nc-settings-tool-66"></i>
-                            <p>DB</p>
                         </a>
                     </li>
                     <li <?php echo ($id == 11) ? 'class="nav-item active"' : 'class="nav-item "' ?>>
@@ -154,6 +142,17 @@ $flashMessage = flash_now();
                         <a class="nav-link" href="./?/tests/network.sh">
                             <i class="nc-icon nc-settings-90"></i>
                             <p>Network test</p>
+                        </a>
+                    </li>
+                    <?php } ?>
+
+                    <!-- Super menu -->
+                    <?php if( isSuper() ) { ?>
+                    <hr>
+                    <li <?php echo ($id == 11) ? 'class="nav-item active"' : 'class="nav-item "' ?>>
+                        <a class="nav-link" href="/admin/phpliteadmin.php">
+                            <i class="nc-icon nc-settings-tool-66"></i>
+                            <p>DB</p>
                         </a>
                     </li>
                     <li <?php echo ($id == 10) ? 'class="nav-item active"' : 'class="nav-item "' ?>>

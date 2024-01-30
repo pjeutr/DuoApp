@@ -50,7 +50,7 @@ set('title', L("settings"));
         $fieldType = 'number';
         $fieldAtrribute = 'min="1" max="60"';
     }
-    if( $row->type == 2) {
+    if( $row->type == 6) {
         $fieldType = 'checkbox';
         $fieldAtrribute = 'data-toggle="switch" '.($row->value ? 'checked=""': '').' data-on-color="info" data-off-color="info" data-eye-open-class="fa-toggle-off"  data-eye-close-class="fa-toggle-on"';
     }
@@ -73,8 +73,27 @@ set('title', L("settings"));
         <div class="flex-row-1 flex-cell first" role="cell"><?= $row->id ?></div>
         <div class="flex-row-3 flex-cell flex-cell" role="cell"><?= L('setting_'.$row->name) ?></div>
         <div class="flex-row-4 flex-cell" role="cell">
+            <?php if( $row->type == 2) { 
+                //TODO fill array with lang variables
+                $select_options = array(
+                  1 =>"1 day",
+                  7 =>"7 days",
+                  14 =>"14 days",
+                  30 =>"1 month",
+                  182 =>"6 months",
+                  365 => "1 year"
+                );
+            ?>
+            <select name="<?= $row->name ?>" class="form-control" aria-label="Default select example">
+            <?php foreach($select_options as $key => $value) { ?>
+                <option <?= ($row->value == $key)?"selected":"" ?> 
+                    value="<?= $key ?>"><?= $value ?></option>
+            <?php }?>
+            </select>
+        <?php } else { ?>             
             <input type="<?= $fieldType ?>" <?= $fieldAtrribute ?> class="form-control<?= $extraClass ?>"
                 name="<?= $row->name ?>" value="<?= $row->value ?>"> 
+        <?php } ?>                  
         </div>
         <div class="flex-row-2 flex-cell" role="cell">
             <button type="submit" class="btn btn-success">

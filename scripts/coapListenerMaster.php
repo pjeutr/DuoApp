@@ -141,14 +141,16 @@ $timer = React\EventLoop\Loop::addPeriodicTimer($interval, function () {
 	$now = new DateTime();
 	$actor = "Scheduled"; 
 	$action = "Systemcheck ";
-	
+	$days = 30;
+	if(!empty( find_setting_by_name("clean_reports")) ) {
+		$days = find_setting_by_name("clean_reports");
+	}
 	/*
 	* Check reports and delete old ones and vacuum. (previously done by crontab)
 	*/
 	if($now->format('H:i') == "04:00") { //every night at 2, needs timezone adjustment so 4
 	//if($now->format('i') == 45) { //every hour
 		//delete rows older than x days in reports
-		$days = 30;
 		$action = cleanupReports($days);
 		mylog($action);
 		if($action > 0) {

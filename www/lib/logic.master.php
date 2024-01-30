@@ -400,14 +400,13 @@ function checkDoorSchedule($door) {
 */
 function openDoor($door, $controller) {
     $duration=find_setting_by_name("door_open");
-    $soundBuzzer=find_setting_by_name("sound_buzzer");
+    
     mylog("Door=".json_encode($door));
     mylog("Cont=".json_encode($controller));
-    mylog("Open Door ".$door->id." cid=".$controller->id." duration=".$duration." sound_buzzer=".$soundBuzzer);
+    mylog("Open Door ".$door->id." cid=".$controller->id." duration=".$duration);
 
     $gpios = array();
     //aggegrate gpios to switch on/off
-    if($soundBuzzer) $gpios[] = GVAR::$BUZZER_PIN;
 
     //add the right wiegand reader leds for a door
     $door1 = find_door_for_reader_id(1,$controller->id);

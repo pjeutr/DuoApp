@@ -47,7 +47,7 @@ function settings_update() {
     $type = filter_var($_POST['setting_type'], FILTER_SANITIZE_STRING);
     $name = filter_var($_POST['setting_name'], FILTER_SANITIZE_STRING);
 
-    if($type == 2) { //checkbox 
+    if($type == 6) { //checkbox 
         $value = isset($_POST[$name])?1:0;
     } else {
         $value = filter_var($_POST[$name], FILTER_SANITIZE_STRING);
@@ -61,7 +61,10 @@ function settings_update() {
     $swalMessage = swal_message("Something went wrong!");
 
     if($type < 9) { 
-        //save setting to db, but not for 9 = system time 
+        //save setting to db, but not for 
+        //9 = system time 
+        //10 = master ip
+        //11 = dhcp
         if(update_with_sql($sql, [$value,$id,$name])) {
             $swalMessage = swal_message("The Setting was changed!", "Great", "success");
         }
@@ -169,6 +172,9 @@ function settings_replicate() {
         $result .= json_encode($output);
         //Copy db to slave
 
+        //REMARK regarding keys
+        // /root/.ssh/id_rsa is used for communication between controllers
+        // /etc/dropbear/dropbear_ecdsa_host_key is used for communication to github
         //ssh -i /root/.ssh/id_rsa root@192.168.178.41
         //scp doesn't work on busybox
         //$cmd = "scp clone.db -f /root/.ssh/id_rsa root@192.168.178.41:/maasland_app/www/db/"; 
