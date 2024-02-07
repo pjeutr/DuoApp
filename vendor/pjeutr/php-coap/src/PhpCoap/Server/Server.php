@@ -44,9 +44,11 @@ class Server extends \Evenement\EventEmitter
 		{
 			$this->sessions[ $peer ] = new RequestHandler( $this->packetStream, $peer  );
 			$this->sessions[ $peer ]->on( 'complete', function() use ( $peer ) {
+				mylog("handlePacket complete");
 				unset( $this->sessions[ $peer ] );
 			});
 			$this->sessions[ $peer ]->on( 'request', function() {
+				mylog("handlePacket request");
 				$this->emit( 'request', func_get_args() );
 			});
 		}

@@ -47,7 +47,7 @@ function find_door_for_reader_id($id, $cid) {
 }
 
 function find_door_for_enum($enum, $cid) {
-    $sql = "SELECT id, name, timezone_id FROM doors d WHERE controller_id = ".$cid." AND enum = ".$enum;
+    $sql = "SELECT id, enum, name, timezone_id FROM doors d WHERE controller_id = ".$cid." AND enum = ".$enum;
     return find_object_by_sql($sql);
 }
 

@@ -439,7 +439,7 @@ function openDoor($door, $controller) {
 *   $door : Door object
 *   $controller : Controller object
 *   $state : 0 or 1 
-*   returns  
+*   returns state or -1 in case of an error
 *
 * Used by webinterface
 */
@@ -448,10 +448,7 @@ function changeOutputState($outputEnum, $controller, $door, $state) {
         //call method on master, is quicker and more reliable
         //and nesting coap-client calls is not working currently
         saveReport("WebAdmin", $door->name." ".($state?"open":"closed")." on ".$controller->name);
-        $gid = getOutputGPIO($outputEnum);
-        setGPIO($gid, $state);
-        //TODO actual return state
-        return true;
+        return changeDoorState($door->enum, $state);
     } else {
         $url = "coap://".$controller->ip."/output_".$outputEnum."_".$state;
         mylog("coapCall:".$url);
@@ -461,8 +458,10 @@ function changeOutputState($outputEnum, $controller, $door, $state) {
             mylog("changeOutputState apiCall return=".$msg);
             if($msg == -1) {
                 saveReport("WebAdmin", $controller->name." Controller does not respond");
+                return -1;
             } else {
                 saveReport("WebAdmin", $door->name." ".($state?"open":"closed")." on ".$controller->name);
+                return $state;
             }
         });
     }
@@ -483,14 +482,14 @@ function operateDoor($door, $open) {
 
     if( $door->controller_id == 1) { //Master = 1
         $gid = getOutputGPIO($door->id);
-
         $currentValue = getGPIO($gid);
         mylog("openLock ".$currentValue."=".$open);
 
         //check if lock state has changed
         if($currentValue != $open) {
             $action = $door->name." is ".(($open == 1)?"opened":"closed");
-            setGPIO($gid, $open);
+            changeDoorState($door->enum, $state);
+
             mylog("CHANGED:".$action);
             saveReport("Scheduled", $action);
             $deferred->resolve($action);
@@ -504,6 +503,7 @@ function operateDoor($door, $open) {
 
 
         if(useLowNetworkMode()){
+            //TODO refactor to oneshot method
             //alternative method without status check
             //which can strain controllers too much on a bad network
             //always send the output singal, no possibility to know if the door was already open or close
