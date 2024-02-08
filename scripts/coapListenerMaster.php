@@ -168,18 +168,40 @@ $timer = React\EventLoop\Loop::addPeriodicTimer($interval, function () {
 		mylog("Cron: Contoller=".$door->controller_id.":".$door->cname."  Door=".$door->enum.":".$door->id.":".$door->name." tz=".$door->timezone_id);
 
 		//has this door a timezone assigned?
-		if( $door->timezone_id ) {
-			//check if the door needs to be open or close
-			$open = checkDoorSchedule($door) ? 1 : 0;
+		if($door->timezone_id) {
+			//if(useLowNetworkMode()) {
+			if(false) {
+				//NOT WORKING NEEDS MORE TESTING
+				//do oneshot open/close door
+				$tz = find_timezone_by_id($door->timezone_id);
+				mylog("ONESHOT tz=".$door->timezone_id." start=".$tz->start);
 
-			//send required state to the door
-			$promises[] = operateDoor($door, $open)->then(
-		        function ($value) {
-					// Deferred resolved, do something with $value
-					mylog("Promise return=".$value);
-					return $value;
-		        }
-		    );
+				$begin = new DateTime($tz->start, new DateTimeZone(getTimezone()));
+				$end = new DateTime($tz->end, new DateTimeZone(getTimezone()));
+				$now = new DateTime('now', new DateTimeZone(getTimezone()));
+				mylog("begin=".json_encode($begin));
+				if ($begin >= $now && $now >= $begin->modify('+5 minute')) {
+					mylog("ONESHOT begin=".$begin)->modify('+5 minute');
+					operateDoor($door, 1);
+				}
+				if ($end <= $now && $end >= $begin->modify('+2 minute')) {
+					mylog("ONESHOT end=".$end)->modify('+2 minute');
+					operateDoor($door, 0);
+				}
+			} else {
+				//check if the door needs to be open or close
+				$open = checkDoorSchedule($door) ? 1 : 0;
+
+				//send required state to the door
+				$promises[] = operateDoor($door, $open)->then(
+			        function ($value) {
+						// Deferred resolved, do something with $value
+						mylog("Promise return=".$value);
+						return $value;
+			        }
+			    );
+
+			}
 		}
 	}
 });
