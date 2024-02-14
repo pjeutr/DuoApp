@@ -41,10 +41,20 @@ function callApi($input, $key) {
 				//Finish the action with Local data
 				//This emergency handling, local data must have been replicated from the master
 				handleInputLocally($input, $key);
-	        } else {
-	            mylog("coapCall, return=".json_encode($result));
-	        }
-	        return $result;
+			} else {
+				mylog("coapCall, return=".json_encode($result));
+
+				//TODO shortcut: if msg is an object, extract data to open the door
+				$msg = json_decode($result)->result;
+				if(is_object($msg)) {
+					mylog(json_encode($msg));
+					mylog("Open doorEnum=".$msg->door." duration=".$msg->duration." gpios=".implode("-",$msg->gpios));
+					$msg = activateOutput($msg->door, $msg->duration, $msg->gpios);
+				}
+				mylog($msg);
+				//end
+			}
+			return $result;
 		});
 	} else {
 		error_log("coapCall, Master controller unkown.");

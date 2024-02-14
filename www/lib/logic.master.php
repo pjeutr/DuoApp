@@ -33,9 +33,9 @@ function resolveController($ip) {
 *   Handle incomming input 
 *   resolve user information
 *
-*   $user : object 
-*   $readerId : id in the db
-*   $controller : controller object
+*   $from : ip adress of the controller
+*   $input : 1 or 2 = wiegand, 3 or 4 = button, 5 or 6 = sensor
+*   $keycode : keycode send by wiegand reader
 *
 *   return json
 *
@@ -390,31 +390,54 @@ function checkDoorSchedule($door) {
 }
 
 /*
-* Open a door 
-* aggregate hardware information and translate to gpio numbers
+* Open a door  
 *   $door : Door object
 *   $controller : Controller object
-*   returns  
+*   opens door locally on master or bij apiCall on slave
 *
 * Used by match_listener and webinterface
 */
 function openDoor($door, $controller) {
+    $data = getDoorData($door, $controller);
+
+    if( $controller->id == 1 ) {
+        //call method on master, is quicker and more reliable
+        $result = activateOutput($data->enum, $data->duration, $data->gpios);
+        mylog("master activateOutput return=".json_encode($data));
+    } else {
+        //call api on slave
+        $uri = "activate/".$data->enum."/".$data->duration."/".implode("-",$data->gpios);
+        $result = apiCall($controller->ip, $uri);
+        mylog("slave apiCall return=".json_encode($data));
+    }
+}
+
+/*
+* Get data to open a door 
+* aggregate hardware information and translate to gpio numbers
+*   $door : Door object
+*   $controllerId : controller id in database
+*   returns object with
+*
+* Used by inputListener, coapServer and webinterface
+*/
+function getDoorData($door, $controller) {
+    $controllerId = $controller->id;
     $duration=find_setting_by_name("door_open");
     
     mylog("Door=".json_encode($door));
-    mylog("Cont=".json_encode($controller));
-    mylog("Open Door ".$door->id." cid=".$controller->id." duration=".$duration);
+    mylog("Open Door ".$door->id." cid=".$controllerId." duration=".$duration);
 
     $gpios = array();
     //aggegrate gpios to switch on/off
 
     //add the right wiegand reader leds for a door
-    $door1 = find_door_for_reader_id(1,$controller->id);
+    $door1 = find_door_for_reader_id(1,$controllerId);
     mylog("Reader1 does door=".$door1->id." Now doing door=".$door->enum);
     if($door1->id === $door->enum){
         $gpios[] = GVAR::$RD1_GLED_PIN;
     }
-    $door2 = find_door_for_reader_id(2,$controller->id);
+    $door2 = find_door_for_reader_id(2,$controllerId);
     mylog("Reader2 does door=".$door2->id." Now doing door=".$door->enum);
     if($door2->id ===  $door->enum){
         $gpios[] = GVAR::$RD2_GLED_PIN;
@@ -422,15 +445,12 @@ function openDoor($door, $controller) {
     //mylog("extra gpios=".json_encode($gpios));
     mylog("extra gpios=".json_encode($gpios));
 
-    if( $controller->id == 1 ) {
-        //call method on master, is quicker and more reliable
-        //and nesting coap-client calls is not working currently
-        $msg = activateOutput($door->id, $duration, $gpios);
-    } else {
-        $uri = "activate/".$door->enum."/".$duration."/".implode("-",$gpios);
-        $msg = apiCall($controller->ip, $uri);
-    }
-    return $msg;
+    return (object) array(
+        "enum" =>$door->enum, 
+        "duration" => $duration, 
+        "gpios" => $gpios, 
+        "name" => $door->name
+    );
 }
 
 /*

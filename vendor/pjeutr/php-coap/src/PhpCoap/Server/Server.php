@@ -40,6 +40,7 @@ class Server extends \Evenement\EventEmitter
 
 	function handlePacket( $pkt, $peer )
 	{
+		mylogDebug($this->sessions);
 		if (! array_key_exists( $peer, $this->sessions ) )
 		{
 			$this->sessions[ $peer ] = new RequestHandler( $this->packetStream, $peer  );

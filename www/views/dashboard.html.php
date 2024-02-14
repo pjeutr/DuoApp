@@ -91,7 +91,9 @@ $presents = count_presents();
                         <hr>
                         <span class="lockIcon"><i class="fa fa-lg
                             fa-<?= (getOutputStatus(1) == 0) ? "lock" : "unlock-alt" ?> 
-                            text-<?= (getOutputStatus(1) == 0) ? "warning" : "success" ?>"></i></span>
+                            text-<?= (getOutputStatus(1) == 0) ? "warning" : "success" ?>"></i>
+                        </span>
+                        <?= showTimezoneButton($doors[0]); ?>
                         <label><?= $doorName1 ?></label><br>
                         <button class="btn btn-success btn-block"  type="button" 
                             onclick="app.timerAlert('<?= $doorName1 ?> is open', <?= $door_open_time ?>, '/?/door/1/1')">Open </button>
@@ -99,7 +101,9 @@ $presents = count_presents();
                         <hr>
                         <span class="lockIcon"><i class="fa fa-lg
                             fa-<?= (getOutputStatus(2) == 0) ? "lock" : "unlock-alt" ?> 
-                            text-<?= (getOutputStatus(2) == 0) ? "warning" : "success" ?>"></i></span>
+                            text-<?= (getOutputStatus(2) == 0) ? "warning" : "success" ?>"></i>
+                        </span>
+                        <?= showTimezoneButton($doors[1]); ?>
                         <label><?= $doorName2 ?></label><br>
                         <button class="btn btn-success btn-block"  type="button" 
                             onclick="app.timerAlert('<?= $doorName2 ?> is open', <?= $door_open_time ?>, '/?/door/1/2')">Open </button>
@@ -132,13 +136,6 @@ $presents = count_presents();
                             <div class="col-7">
                                 <!-- <a href="/?/doors/<?= $door->id ?>/edit"><?= $door->cname ?></a><br> -->
                                 <?= $door->cname ?>
-                                
-                                <?php if(!empty($door->timezone_id)) {  ?> 
-                                <a href="/?/timezones/<?= $door->timezone_id ?>/edit">
-                                    <i class="nc-icon nc-watch-time"></i>
-                                    <?= $door->timezone_id ?></a>
-                                <?php } ?> 
-
                                 <!-- <sub><?=  L("controller"); ?></sub> -->
                             </div>
                         </div>
@@ -151,6 +148,7 @@ $presents = count_presents();
                             >
                             <i class="fa fa-spinner fa-spin"></i>
                         </span> 
+                        <?= showTimezoneButton($door); ?>
                         <label><?= $door->name ?></label><br>
                         <button class="btn btn-success btn-block"  type="button" 
                             onclick="app.timerAlert('<?= $door->name ?> is open', <?= $door_open_time ?>, '/?/door/<?= $door->controller_id ?>/<?= $door->id ?>')">Open </button>
@@ -162,8 +160,6 @@ $presents = count_presents();
                         $iterator->next();
                         $door = $iterator->current();
                     ?>  
-                    </div>      
-                    <div class="card-footer">
                         <hr><!-- Slave 2nd door  -->
                         <span class="lockIcon" 
                             data-key="<?= $door->enum ?>"
@@ -171,6 +167,7 @@ $presents = count_presents();
                             >
                             <i class="fa fa-spinner fa-spin"></i>
                         </span> 
+                        <?= showTimezoneButton($door); ?>
                         <label><?= $door->name ?></label><br>
                         <button class="btn btn-success btn-block"  type="button" 
                             onclick="app.timerAlert('<?= $door->name ?> is open', <?= $door_open_time ?>, '/?/door/<?= $door->controller_id ?>/<?= $door->id ?>')">Open </button>    

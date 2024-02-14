@@ -40,9 +40,14 @@ $wiegandObserver->onModify(function($file_name) {
 	$keycode = $parts[1];
 	$reader = $parts[2];
 	mylog("Wiegand:". $reader.":".$keycode);
-	//$result =  callApi($reader, $keycode);
+
 	$result = handleInput("127.0.0.1", $reader, $keycode);
-    mylog(json_encode($result));
+
+	//TODO shortcut: open door directly
+	//$data = getDoorData($door, "1");
+	//$result = activateOutput($data->enum, $data->duration, $data->gpios);
+
+	mylog(json_encode($result));
 });	
 
 $lastMicrotime = 0;
@@ -112,6 +117,11 @@ $server->on( 'request', function( $req, $res, $handler ) {
 	        $from = $handler->getPeerHost();
 			mylog("coapServer: input=".$input." data=".$keycode);
 			$result = handleInput($from, $input, $keycode);
+
+			//TODO shortcut: do not make separe coap call to open door, 
+			//but handleInput/getDoorData and return data
+			//$data = getDoorData($door, "1");
+
 			mylog("coapServer result=".json($result));
 	        break;
 	    case 'output':
@@ -120,7 +130,8 @@ $server->on( 'request', function( $req, $res, $handler ) {
 	        $result = $type.": is not available on the Master controller!";
 	        break;
 	    case 'dump':
-			meminfo_dump(fopen("/tmp/dump$input.json", 'w'));
+			//meminfo_dump(fopen("/tmp/dump$input.json", 'w'));
+	    	meminfo_dump(fopen("/maasland_app/www/dump$input.json", 'w'));
 			$result = "dump$input";
 			break;
 	    default:
@@ -164,6 +175,7 @@ $timer = React\EventLoop\Loop::addPeriodicTimer($interval, function () {
 	$doors = find_doors();
 	$promises = [];
 
+	//if(false) { //disable schedule
 	foreach ($doors as $door) {
 		mylog("Cron: Contoller=".$door->controller_id.":".$door->cname."  Door=".$door->enum.":".$door->id.":".$door->name." tz=".$door->timezone_id);
 
