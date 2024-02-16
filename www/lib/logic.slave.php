@@ -130,7 +130,6 @@ function handleInputLocally($input, $keycode) {
     $duration=find_setting_by_name("door_open");
     mylog(json_encode($controller));
     if(empty($controller)) {
-        saveReport($from, $input, "unkown controller");
         return "unkown controller";
     }
     mylog("handleInput Controller=".$controller->name." input=".$input." keycode=".$keycode);
