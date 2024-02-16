@@ -430,16 +430,16 @@ $().ready(function() {
             }
         }
     });
-
 });
 
 app = {
     //Button spinner
-    addSpinnerToButton: function(button, showSpinner, $text) {
+    addSpinnerToButton: function(button, showSpinner, buttonText, buttonLink) {
         //console.log("buttonSpinner="+showSpinner);
         button.disabled=showSpinner; 
-        button.innerHTML=showSpinner ? '<i class="fa fa-spinner fa-spin"></i> '+resource.loading:$text;
+        button.innerHTML=showSpinner ? '<i class="fa fa-spinner fa-spin"></i>'+resource.loading : buttonText;
         //console.log(button);
+        window.location.href = buttonLink;
     }, 
     // Background, Ajax call
     ajaxCall: function(url) {

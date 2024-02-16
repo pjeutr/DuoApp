@@ -20,9 +20,9 @@ set('title', L("settings"));
                         </button>
                         <?= iconLink_to(L("setting_download") , 'settings_download', 'btn-outline', 'fa fa-download') ?>
 
-                        <?= iconLink_to(L("setting_replicate") , 'settings_replicate', 'btn-outline', 'fa fa-link') ?> 
+                        <button class="btn btn-success btn-outline" type="button" rel="tooltip" title="Copy config to all the slaves" id="replicate_button">
+                        <i class="fa fa fa-link"></i>Replicate</button>
                     </form>
-
 
                     </div>
                     <div class="card-body">
@@ -117,6 +117,11 @@ set('title', L("settings"));
     function settingsFormValidation(id) {
         console.log("settingsFormValidation");
         //$("#settingsForm").validate();
+
+        $("#replicate_button").click(function () {
+            app.addSpinnerToButton(this, true, "Replicate","/?/settings_replicate");
+            var self = this;
+        });
 
         // Show the name of the file appear on select
         $(".custom-file-input").on("change", function() {

@@ -227,12 +227,16 @@ dispatch_delete('ledger/:id', 'ledger_destroy');
 
 //DEV pages
 dispatch_get('tests/:name/:params',  'run_script');
+dispatch_get('views/:id/:name/:params',  'run_script');
 function run_script() {
   $cmd = "/maasland_app/tests/".params('name')." ".params('params');
-  echo("tests: ".$cmd);
-	$r = shell_exec($cmd);
-	mylog($r);
-    return "<pre>".($r)."</pre>";
+  mylogDebug($cmd);
+  exec($cmd.' 2>&1',$output, $retval);
+  mylogDebug($output);
+  set('id', params('id'));
+  set('title', params('name'));
+  set('content', "<pre>".(implode("<br>",$output))."</pre>");
+  return html('page.html.php');
 }
 dispatch_get('dev/:switch',  'set_dev');
 function set_dev() {

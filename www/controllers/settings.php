@@ -146,32 +146,35 @@ function updateNetwork($hostname) {
     //exec('/etc/init.d/S40network restart');
 }
 
+function doExec($cmd, $name){
+    mylogDebug($cmd);
+    exec($cmd.' 2>&1',$output, $retval);
+    mylogDebug($output);
+    return ($retval == 0 ? '<i class="fa fa-lg fa-check text-success"></i>':'<i class="fa fa-lg fa-times text-danger"></i>')." $name<br>";
+}
+
 function settings_replicate() {
+    $result = "";
     $path = "/maasland_app/www/db";
-    //delete previous clone
-    $cmd = "rm $path/clone.db";
-    mylog($cmd);
-    //clone database
-    $cmd = "sqlite3 $path/prod.db '.dump users groups doors rules controllers timezones settings' | sqlite3 $path/clone.db";
-    mylog($cmd);
-    $result = shell_exec($cmd);
-    mylog($result);
+    //Remove old clone 
+    $result .=  doExec("rm $path/clone.db", 
+        "Remove old config");
+    //Create new clone
+    $result .=  doExec("sqlite3 $path/prod.db '.dump users groups doors rules controllers timezones settings' | sqlite3 $path/clone.db", 
+        "Create new config");
 
     $controllers = find_controllers();
+    //if(false){
     foreach ($controllers as $controller) {
-        $result .= "<hr>slave ip=" . $controller->ip."<br>";
+        $result .= "<hr>SLAVE ip=" . $controller->ip."<br>";
         //Clean previous remarks
-        $cmd = "sqlite3 $path/clone.db 'UPDATE controllers SET remarks = null;'";
-        exec($cmd.' 2>&1',$output);
-        $result .= json_encode($output);
+        $result .=  doExec("sqlite3 $path/clone.db 'UPDATE controllers SET remarks = null;'", 
+            "Prepare config");
         //Mark current slave 
         $sql = "UPDATE controllers SET remarks = \"this_is_me\" WHERE ip = \"$controller->ip\"";
-        $cmd = "sqlite3 $path/clone.db '$sql';";
-        $result .= $cmd;
-        exec($cmd.' 2>&1',$output);
-        $result .= json_encode($output);
-        //Copy db to slave
-
+        $result .=  doExec("sqlite3 $path/clone.db '$sql';", 
+            "Mark current slave");
+        
         //REMARK regarding keys
         // /root/.ssh/id_rsa is used for communication between controllers
         // /etc/dropbear/dropbear_ecdsa_host_key is used for communication to github
@@ -179,12 +182,15 @@ function settings_replicate() {
         //scp doesn't work on busybox
         //$cmd = "scp clone.db -f /root/.ssh/id_rsa root@192.168.178.41:/maasland_app/www/db/"; 
         //StrictHostKeychecking doesn't work with dropbear, so we use dbclient
-        $cmd = "cat $path/clone.db | dbclient -y -i /root/.ssh/id_rsa root@$controller->ip 'cat > $path/remote.db'";
-        $result .= "<br>".$cmd."<br>";
-        exec($cmd.' 2>&1',$output);
-        $result .= json_encode($output);
+
+        //Copy db to slave
+        $result .=  doExec("cat $path/clone.db | dbclient -y -i /root/.ssh/id_rsa root@$controller->ip 'cat > $path/remote.db'", 
+            "Copy config to slave");
     }
-    return $result;
+    set('id', 7);
+    set('title', "Replicate");
+    set('content', $result);
+    return html('page.html.php');
 }
 
 function settings_download() {
