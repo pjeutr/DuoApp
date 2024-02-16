@@ -119,7 +119,7 @@ set('title', L("settings"));
         //$("#settingsForm").validate();
 
         $("#replicate_button").click(function () {
-            app.addSpinnerToButton(this, true, "Replicate","/?/settings_replicate");
+            app.addSpinnerWithLinkToButton(this, true, "Replicate","/?/settings_replicate");
             var self = this;
         });
 

@@ -46,7 +46,7 @@ $().ready(function() {
         });
 
         $("#scan_key").click(function () {
-            $button_text = resource.controllerSearchButton;
+            $button_text = '<i class="fa fa fa-search"></i>'+resource.controllerSearchButton;
             //$('.loaderImage').show();
             app.addSpinnerToButton(this, true, $button_text);
             var self = this;
@@ -434,7 +434,14 @@ $().ready(function() {
 
 app = {
     //Button spinner
-    addSpinnerToButton: function(button, showSpinner, buttonText, buttonLink) {
+    addSpinnerToButton: function(button, showSpinner, $text) {
+        //console.log("buttonSpinner="+showSpinner);
+        button.disabled=showSpinner; 
+        button.innerHTML=showSpinner ? '<i class="fa fa-spinner fa-spin"></i> '+resource.loading:$text;
+        //console.log(button);
+    }, 
+    //Button spinner
+    addSpinnerWithLinkToButton: function(button, showSpinner, buttonText, buttonLink) {
         //console.log("buttonSpinner="+showSpinner);
         button.disabled=showSpinner; 
         button.innerHTML=showSpinner ? '<i class="fa fa-spinner fa-spin"></i>'+resource.loading : buttonText;
