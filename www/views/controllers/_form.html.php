@@ -47,7 +47,7 @@
     <button type="submit" class="btn btn-success">
         <i class="fa fa-save"></i> <?php echo L::button_save; ?>
     </button>
-    <?php if(isset($controller->id)) { ?>
+    <?php if(isset($controller->id) && $controller->id != 1) { ?>
     <a rel="tooltip" title="" class="btn btn-danger" href="/?/controllers/<?= $controller->id ?>" onclick="app.areYouSure(this);return false;" data-original-title="Delete"><i class="fa fa-times"></i><?php echo L::button_delete; ?></a>
     <?php } ?>
 </form>
