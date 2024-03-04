@@ -19,13 +19,19 @@ function network_slave() {
     set('network', getNetworkData());
     return html('network_slave.html.php');
 }
+/*
+*   function can be called from network.html.php and network_slave.html.php
+*   id 1 => change network on master => network.html.php
+*   id 2 => change network slave => network_slave.html.php
+*   id 3 => master ip => network_slave.html.php
+*/
 function network_update() {
     $id = filter_var(params('id'), FILTER_VALIDATE_INT);
-    //standard message is failure, update to success is something has changed
+    //standard message is failure, update to success if something has changed
     $swalMessage = swal_message("Something went wrong!");
     $restartMessage = "<p>Restart to make these settings active</p>";
 
-    if($id == 1) {
+    if($id == 3) { 
         $master = filter_var($_POST['master'], FILTER_SANITIZE_STRING);
         $swalMessage = swal_message("Master ip changed to :".$master);
     } else {
@@ -59,7 +65,10 @@ function network_update() {
 
     set('swalMessage', $swalMessage);
     set('network', getNetworkData());
-    return html('network.html.php');
+    if($id == 1) { 
+        return html('network.html.php');
+    } 
+    return html('network_slave.html.php');
 }
 function getNetworkData() {
     $dhcp = find_setting_by_id(11); //id 11 is dhcp in db

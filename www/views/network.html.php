@@ -13,7 +13,7 @@ set('title', L("network"));
                     <div class="card-body">
                         <div class="card-body table-responsive">
 
-<form class="networkForm" action="<?= url_for('network', 2) ?>" method="POST">
+<form class="networkForm" action="<?= url_for('network', 1) ?>" method="POST">
     <input type="hidden" name="_method" id="_method" value="PUT">
 
     <div class="flex-table row" role="rowgroup">
