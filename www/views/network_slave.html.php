@@ -13,6 +13,27 @@ set('title', L("network"));
                     <div class="card-body">
                         <div class="card-body table-responsive">
 
+                       
+<form class="masterForm" action="<?= url_for('network', 1) ?>" method="POST">
+    <input type="hidden" name="_method" id="_method" value="PUT">
+
+    <div class="flex-table row" role="rowgroup">
+        <div class="flex-row-3 flex-cell flex-cell" role="cell">Master IP<br>
+            <sub>This overules automatic discovery of the Master controller for slaves<br>
+            Only use in special Network situation, where multicast doesn't work.</sub>
+        </div>
+        <div class="flex-row-4 flex-cell" role="cell">
+            <input type="text" class="form-control"
+                name="master" value="127.0.0.1"> 
+        </div>
+        <div class="flex-row-2 flex-cell" role="cell">
+            <button type="submit" class="btn btn-success">
+                <i class="fa fa-edit"></i> <?=  L("button_save"); ?>
+            </button>
+        </div>
+
+    </div>
+</form>
 <form class="networkForm" action="<?= url_for('network', 2) ?>" method="POST">
     <input type="hidden" name="_method" id="_method" value="PUT">
 
@@ -59,18 +80,11 @@ set('title', L("network"));
                 value = "<?= $network["router"] ?>"
                 pattern="^((\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.){3}(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$">
             </div>
-        </div>
-    </div>
+        </div>  
+
+    </div>      
+
 </form>
-
-<hr>
-Manage network settings on slaves:
-<p>
-<?php foreach (find_controllers() as $controller) {  ?>
-    <a href="http://<?= $controller->ip ?>/?/manage/network" target="<?= $controller->ip ?>"><?= $controller->name ?>-<?= $controller->name ?></a><br>
-<?php } ?>
-</p>
-
             
                         </div>                                          
                     </div>

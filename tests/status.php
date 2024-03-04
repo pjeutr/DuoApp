@@ -21,6 +21,8 @@ echo "\nButton1=". getGPIO(GVAR::$GPIO_BUTTON1);
 echo "\nButton2=". getGPIO(GVAR::$GPIO_BUTTON2);
 echo "\nSensor1=". getGPIO(GVAR::$GPIO_DOORSTATUS1)."_".getGPIO(GVAR::$GPIO_DOORSTATUS1N);
 echo "\nSensor2=". getGPIO(GVAR::$GPIO_DOORSTATUS2)."_".getGPIO(GVAR::$GPIO_DOORSTATUS2N);
+echo "\nLed reader1=". getGPIO(GVAR::$RD1_GLED_PIN);
+echo "\nLed reader2=". getGPIO(GVAR::$RD2_GLED_PIN);
 echo "\nDoor1=". getGPIO(GVAR::$GPIO_DOOR1);
 echo "\nDoor2=". getGPIO(GVAR::$GPIO_DOOR2);
 echo "\nFirmware=". getGPIO(GVAR::$GPIO_FIRMWARE)." => ";

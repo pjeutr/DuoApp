@@ -276,6 +276,9 @@ dispatch_get   ('settings_replicate',   'settings_replicate');
 
 dispatch_get   ('network',   'network_index');
 dispatch_put   ('network/:id', 'network_update');
+dispatch_get   ('manage/network',   'network_slave');
+dispatch_put   ('manage/network/:id', 'network_update');
+
 
 //webapi
 dispatch('api/version', 'version_page');

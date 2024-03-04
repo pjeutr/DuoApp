@@ -124,6 +124,12 @@ $().ready(function() {
         settingsFormValidation();
     };
 
+    if ($(".networkForm").length != 0) {
+        //console.log("init networkForm");
+        //$("#settingsForm").validate();
+        networkFormValidation();
+    };
+
     // Init Datetimepicker
     if ($("#datetimepicker").length != 0) {
         $('.datetimepicker').datetimepicker({

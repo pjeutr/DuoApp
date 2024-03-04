@@ -12,30 +12,74 @@ define('ISPC_CLASS_PATH', 'lib/vlibtemplate');
 require "lib/vlibtemplate/tpl.inc.php";
 
 function network_index() {
-    $arr = array(
-        array(
-            "type" => 1,
-            "value" => "valore1"
-        ),
-        array(
-            "type" => 1,
-            "value" => "valore2"
-        )
-    );
-
-    set('network', ($arr)); 
+    set('network', getNetworkData());
     return html('network.html.php');
+}
+function network_slave() {
+    set('network', getNetworkData());
+    return html('network_slave.html.php');
 }
 function network_update() {
     $id = filter_var(params('id'), FILTER_VALIDATE_INT);
-    //$type = filter_var($_POST['setting_type'], FILTER_SANITIZE_STRING);
-    //$name = filter_var($_POST['setting_name'], FILTER_SANITIZE_STRING);
+    //standard message is failure, update to success is something has changed
+    $swalMessage = swal_message("Something went wrong!");
+    $restartMessage = "<p>Restart to make these settings active</p>";
 
-    $swalMessage = swal_message("Under maintainance!");
+    if($id == 1) {
+        $master = filter_var($_POST['master'], FILTER_SANITIZE_STRING);
+        $swalMessage = swal_message("Master ip changed to :".$master);
+    } else {
+        //change network
+        if(isset($_POST['dhcp'])) {
+            mylog("DHCP");
+            $srcfile='/etc/network/interfaces.org';
+            $dstfile='/etc/network/interfaces';
+            copy($srcfile, $dstfile);
+
+            if(update_with_sql("UPDATE settings SET value = 1 WHERE id = 11 AND name = 'dhcp'", [])) {
+                $swalMessage = swal_message("Network settings have changed to DHCP!".$restartMessage, "Great", "success");
+            }
+        } else {
+            $ip = filter_var($_POST['ip'], FILTER_SANITIZE_STRING);
+            $subnet = filter_var($_POST['subnet'], FILTER_SANITIZE_STRING);
+            $router = filter_var($_POST['router'], FILTER_SANITIZE_STRING);
+
+            updateNetwork($ip, $subnet, $router);
+
+            $result = "Network settings have changed to static<br> IP : ".$ip."<br> Subnet Mask : ".$subnet."<br> Router : ".$router.$restartMessage;
+            mylog($result);
+
+            if(update_with_sql("UPDATE settings SET value = 0 WHERE id = 11 AND name = 'dhcp'", [])) {
+                $swalMessage = swal_message($result, "Great", "success");
+            }
+        }
+    }
+
+    //updateNetwork($ip, $netmask, $gateway);
 
     set('swalMessage', $swalMessage);
-    set('network', array("a","b"));
+    set('network', getNetworkData());
     return html('network.html.php');
+}
+function getNetworkData() {
+    $dhcp = find_setting_by_id(11); //id 11 is dhcp in db
+    $master = find_setting_by_id(10); //id 10 is master in db
+    $ip = $_SERVER['SERVER_ADDR'];
+    //ifconfig eth0 | awk -F: '/Mask:/{print $4}'
+    //ifconfig eth0 | sed -rn '2s/ .*:(.*)$/\1/p'
+    $subnet = exec("ifconfig eth0 | awk -F: '/Mask:/{print $4}'");
+    //ip route show | sed 's/\(\S\+\s\+\)\?default via \(\S\+\).*/\2/p; d'
+    //route -n | grep "^0\.0\.0\.0" | awk '{print $2}'
+    $router = exec("route -n | grep '^0\.0\.0\.0' | awk '{print $2}'");
+    mylog($router);
+
+    return array(
+        "dhcp" => $dhcp,
+        "master" => $master,
+        "ip" => $ip,
+        "subnet" => $subnet,
+        "router" => $router,
+    );
 }
 
 function settings_index() {
@@ -125,7 +169,7 @@ function updateHostname($hostname) {
 }
 
 
-function updateNetwork($hostname) {
+function updateNetwork($ip, $netmask, $gateway) {
     //make backup
     copy('/etc/network/interfaces', '/etc/network/interfaces~');
 
@@ -133,9 +177,9 @@ function updateNetwork($hostname) {
     $network_tpl = new tpl();
     $network_tpl->newTemplate('/maasland_app/www/views/layout/network_interfaces.tpl');
 
-    $network_tpl->setVar('ip_address', "666");
-    $network_tpl->setVar('netmask', "666");
-    $network_tpl->setVar('gateway', "666");
+    $network_tpl->setVar('ip_address', $ip);
+    $network_tpl->setVar('netmask', $netmask);
+    $network_tpl->setVar('gateway', $gateway);
     //$network_tpl->setVar('broadcast', $this->broadcast($server_config['ip_address'], $server_config['netmask']));
     //$network_tpl->setVar('network', $this->network($server_config['ip_address'], $server_config['netmask']));
 
