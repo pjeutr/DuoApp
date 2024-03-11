@@ -78,7 +78,7 @@
         </div>
         <div class="flex-row-4 flex-cell" role="cell">
             <input type="text" class="form-control"
-                name="master" value="127.0.0.1"> 
+                name="master" value="<?= $network["master"] ?>"> 
         </div>
         <div class="flex-row-2 flex-cell" role="cell">
             <button type="submit" class="btn btn-success">
@@ -128,7 +128,7 @@
         </div>
 
         <div class="flex-table row" role="rowgroup">
-            <div class="flex-row-3 flex-cell flex-cell" role="cell">Router</div>
+            <div class="flex-row-3 flex-cell flex-cell" role="cell">Gateway</div>
             <div class="flex-row-4 flex-cell" role="cell">
                 <input name="router" type="text" minlength="7" maxlength="15" size="15" 
                 value = "<?= $network["router"] ?>"

@@ -53,7 +53,7 @@ set('title', L("network"));
         </div>
 
         <div class="flex-table row" role="rowgroup">
-            <div class="flex-row-3 flex-cell flex-cell" role="cell">Router</div>
+            <div class="flex-row-3 flex-cell flex-cell" role="cell">Gateway</div>
             <div class="flex-row-4 flex-cell" role="cell">
                 <input name="router" type="text" minlength="7" maxlength="15" size="15" 
                 value = "<?= $network["router"] ?>"

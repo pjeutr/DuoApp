@@ -33,7 +33,9 @@ function network_update() {
 
     if($id == 3) { 
         $master = filter_var($_POST['master'], FILTER_SANITIZE_STRING);
-        $swalMessage = swal_message("Master ip changed to :".$master);
+        $reloadService = "To load changes, the controller needs to be restarted";
+        $swalMessage = swal_message("Master ip will be changed changed to :".$master."<br>".$reloadService, "Great", "success");
+        updateMasterIP($master);
     } else {
         //change network
         if(isset($_POST['dhcp'])) {
@@ -60,9 +62,6 @@ function network_update() {
             }
         }
     }
-
-    //updateNetwork($ip, $netmask, $gateway);
-
     set('swalMessage', $swalMessage);
     set('network', getNetworkData());
     if($id == 1) { 
@@ -72,7 +71,9 @@ function network_update() {
 }
 function getNetworkData() {
     $dhcp = find_setting_by_id(11); //id 11 is dhcp in db
-    $master = find_setting_by_id(10); //id 10 is master in db
+    //$master = find_setting_by_id(10); //id 10 is master in db
+    //$master = searchMasterControllerIP();
+    $master = getMasterControllerIP();
     $ip = $_SERVER['SERVER_ADDR'];
     //ifconfig eth0 | awk -F: '/Mask:/{print $4}'
     //ifconfig eth0 | sed -rn '2s/ .*:(.*)$/\1/p'
@@ -171,12 +172,31 @@ function updateHostname($hostname) {
     $hostname = $output[0];
 
     //restart network to load changes
-    exec('/etc/init.d/S40network restart');
+    //exec('/etc/init.d/S40network restart');
 
     //return $retval. "-" . json_encode($output);
     return $hostname;
 }
 
+function updateMasterIP($ip) {
+    //create template with changes
+    $file = '/maasland_app/www/.extensions.php';
+    $extensions_tpl = new tpl();
+    $extensions_tpl->newTemplate('/maasland_app/www/views/layout/extensions.tpl');
+    $extensions_tpl->setVar('master_ip', $ip);
+
+    // Adding opening php tag in the template gives an error
+    // So we add it here in front of the result, 
+    file_put_contents($file, "<?php \n".$extensions_tpl->grab());
+    unset($extensions_tpl);
+
+    //empty opcache, cli and webserver have seperate opcache, so do a restart to be sure
+    //opcache_reset();
+    //exec('/scripts/restart_services.sh');
+
+    //header('Location: http://'.$_SERVER['HTTP_HOST'].'/?/manage/network');
+    //redirect_to('http://'.$_SERVER['HTTP_HOST'].'/?/manage/network');
+}
 
 function updateNetwork($ip, $netmask, $gateway) {
     //make backup
