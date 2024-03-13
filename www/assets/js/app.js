@@ -26,7 +26,7 @@ $().ready(function() {
             // console.log(this);
             // console.log(form);
             // console.log(event);
-            form.submit();
+            //form.submit();
             //return false; 
         }
     });

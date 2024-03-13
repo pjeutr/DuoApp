@@ -13,6 +13,17 @@ set('title', L("network"));
                     <div class="card-body">
                         <div class="card-body table-responsive">
 
+
+<hr>
+Before changing network settings on Master.
+First manage network settings on slaves:
+<p>
+<?php foreach (find_controllers() as $controller) {  ?>
+    <a href="http://<?= $controller->ip ?>/?/manage/network" target="<?= $controller->ip ?>"><?= $controller->name ?>-<?= $controller->name ?></a><br>
+<?php } ?>
+</p>
+
+
 <form class="networkForm" action="<?= url_for('network', 1) ?>" method="POST">
     <input type="hidden" name="_method" id="_method" value="PUT">
 
@@ -25,7 +36,7 @@ set('title', L("network"));
         </div>
         <div class="flex-row-2 flex-cell" role="cell">
             <button type="submit" class="btn btn-success">
-                <i class="fa fa-edit"></i> <?=  L("button_save"); ?>
+                <i class="fa fa-edit"></i> <?=  L("button_save"); ?>  and restart network
             </button>
         </div>
     </div>
@@ -63,14 +74,6 @@ set('title', L("network"));
     </div>
 </form>
 
-<hr>
-Manage network settings on slaves:
-<p>
-<?php foreach (find_controllers() as $controller) {  ?>
-    <a href="http://<?= $controller->ip ?>/?/manage/network" target="<?= $controller->ip ?>"><?= $controller->name ?>-<?= $controller->name ?></a><br>
-<?php } ?>
-</p>
-
             
                         </div>                                          
                     </div>
@@ -85,9 +88,18 @@ Manage network settings on slaves:
         console.log("neworkFormValidation");
         //$("#networkForm").validate();
 
-        var toggle = $("[name='dhcp']").bootstrapSwitch();
+        var master = $("[name='master']").bootstrapSwitch();
+        master.on("switchChange.bootstrapSwitch", function(event, state) {
+            console.log("change="+state);
+            if(state){
+                $('#master_config').hide();
+            } else {
+                $('#master_config').show();
+            }
+        });
 
-        toggle.on("switchChange.bootstrapSwitch", function(event, state) {
+        var dhcp = $("[name='dhcp']").bootstrapSwitch();
+        dhcp.on("switchChange.bootstrapSwitch", function(event, state) {
             console.log("change="+state);
             if(state){
                 $('#static_config').hide();

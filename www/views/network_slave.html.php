@@ -68,31 +68,59 @@
                         <div class="card-body table-responsive">
 
                        
-<form class="masterForm" action="<?= url_for('manage/network', 3) ?>" method="POST">
+<form id="masterForm" class="masterForm" action="<?= url_for('manage/network', 3) ?>" method="POST">
     <input type="hidden" name="_method" id="_method" value="PUT">
 
     <div class="flex-table row" role="rowgroup">
-        <div class="flex-row-3 flex-cell flex-cell" role="cell">Master IP<br>
-            <sub>This overules automatic discovery of the Master controller for slaves<br>
-            Only use in special Network situation, where multicast doesn't work.</sub>
+        <div class="flex-row-3 flex-cell flex-cell" role="cell">Automatic Master IP discovery<br>
+            <sub>When turned off, the IPv4 Address of the Master controller must be entered manually.<br>
+            Only use this in special Network situations, where multicast doesn't work.
+            <!-- <?= json_encode($network) ?> -->
+
+<!-- var data = $("#masterForm").serialize();
+$.post('url', data); -->
+<!-- 
+<button class="btn btn-warning" type="button" onclick="app.postCall('/?/manage/network/3',$('#masterForm').serialize())">Post</button>
+ -->
+<!--  
+<button class="btn btn-warning" type="button" onclick="app.postCall('/?/manage/network/3',
+{_method: 'PUT', master: 'on', master_ip: '127.1.2.3'})">Open</button>
+ -->
+
+        </sub>
         </div>
         <div class="flex-row-4 flex-cell" role="cell">
-            <input type="text" class="form-control"
-                name="master" value="<?= $network["master"] ?>"> 
+            <input class="toggle-master" name="master" type="checkbox" data-toggle="switch" 
+            <?= $network["master"] ? 'checked' : ""  ?>
+            data-on-color="info" data-off-color="info" data-eye-open-class="fa-toggle-off"  data-eye-close-class="fa-toggle-on">
         </div>
         <div class="flex-row-2 flex-cell" role="cell">
             <button type="submit" class="btn btn-success">
-                <i class="fa fa-edit"></i> <?=  L("button_save"); ?>
+                <i class="fa fa-edit"></i> <?=  L("button_save"); ?> and restart services
             </button>
         </div>
+    </div>
 
+    <div id="master_config" 
+        <?= $network["master"] ? 'style="display: none;"' : ""  ?>
+    >    
+        <div class="flex-table row" role="rowgroup">
+            <div class="flex-row-3 flex-cell flex-cell" role="cell">IPv4 Address</div>
+            <div class="flex-row-4 flex-cell" role="cell">
+                <input name="master_ip" type="text" minlength="7" maxlength="15" size="15" 
+                value = "<?= $network["master_ip"] ?>"
+                pattern="^((\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.){3}(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$">
+            </div>
+        </div>
     </div>
 </form>
-<form class="networkForm" action="<?= url_for('manage/network', 2) ?>" method="POST">
+
+<form id="networkForm" class="networkForm" action="<?= url_for('manage/network', 2) ?>" method="POST">
     <input type="hidden" name="_method" id="_method" value="PUT">
 
     <div class="flex-table row" role="rowgroup">
-        <div class="flex-row-3 flex-cell flex-cell" role="cell">DHCP</div>
+        <div class="flex-row-3 flex-cell flex-cell" role="cell">DHCP<br>
+            <sub>When turned off, the IPv4 Address, Subnet Mask and Gateway should be entered correctly!</sub></div>
         <div class="flex-row-4 flex-cell" role="cell">
             <input class="toggle-dhcp" name="dhcp" type="checkbox" data-toggle="switch" 
             <?= $network["dhcp"] ? 'checked' : ""  ?>
@@ -100,7 +128,7 @@
         </div>
         <div class="flex-row-2 flex-cell" role="cell">
             <button type="submit" class="btn btn-success">
-                <i class="fa fa-edit"></i> <?=  L("button_save"); ?>
+                <i class="fa fa-edit"></i> <?=  L("button_save"); ?> and restart network
             </button>
         </div>
     </div>
@@ -232,63 +260,45 @@
     <?= empty($swalMessage) ? '' : 'swal( '.$swalMessage.');' ?>
     <?= isset($flashMessage['swalMessage']) ? 'swal( '.swal_message_success($flashMessage['swalMessage']).');' : '' ?>
 
-    $(document).ready(function() {
-        $page = $('.full-page');
-        image_src = $page.data('image');
-
-        if (image_src !== undefined) {
-            image_container = '<div class="full-page-background" style="background-image: url(' + image_src + ') "/>'
-            $page.append(image_container);
-        }
-
-        setTimeout(function() {
-            // after 1000 ms we add the class animated to the login/register card
-            $('.card').removeClass('card-hidden');
-        }, 700)
-    });
-
     function networkFormValidation(id) {
-        console.log("neworkFormValidation");
+        console.log("networkFormValidation");
         //$("#networkForm").validate();
 
-        var toggle = $("[name='dhcp']").bootstrapSwitch();
+        $( "#masterForm" ).on( "submit", function( event ) {
+            /*
+            event.preventDefault();
 
-        toggle.on("switchChange.bootstrapSwitch", function(event, state) {
-            console.log("change="+state);
+            var data = $("#masterForm").serialize();
+            var posting = $.post('/?/manage/network/3', data );
+            posting.done(function( data ) {
+                console.log(data);
+                swal("Restart");
+                window.setTimeout( function(){
+                    console.log("redirect!");
+                    window.location = "/?/manage/network";
+                },5000 );
+            });
+            */
+        });
+
+        var master = $("[name='master']").bootstrapSwitch();
+        master.on("switchChange.bootstrapSwitch", function(event, state) {
+            console.log("master show="+state);
+            if(state){
+                $('#master_config').hide();
+            } else {
+                $('#master_config').show();
+            }
+        });
+
+        var dhcp = $("[name='dhcp']").bootstrapSwitch();
+        dhcp.on("switchChange.bootstrapSwitch", function(event, state) {
+            console.log("dhcp show="+state);
             if(state){
                 $('#static_config').hide();
             } else {
                 $('#static_config').show();
             }
-        });
-        /*
-        * Validation docs https://jqueryvalidation.org/documentation/
-        */
-        $("#networkForm").validate({
-            rules: {
-                maxLength: 4,
-                hostname: {
-                    required: true,
-                    maxlength: 30
-                }
-            }
-            // ,
-            // messages: {
-            //     hostname: "Please enter a hostname",
-            // },
-        });
-        $("#masterForm").validate({
-            rules: {
-                maxLength: 4,
-                hostname: {
-                    required: true,
-                    maxlength: 30
-                }
-            }
-            // ,
-            // messages: {
-            //     hostname: "Please enter a hostname",
-            // },
         });
     }
 </script>

@@ -319,7 +319,7 @@ function weekDaysPlus($stringArray) {
 function configDB() {
     $development = Arrilot\DotEnv\DotEnv::get('APP_DEVELOPMENT', false);
 
-    mylogError("Env debug=".option('debug')." log_level=".option('log_level')." development=".$development);
+    mylogInfo("Env debug=".option('debug')." log_level=".option('log_level')." development=".$development);
 
     $env = $development ? ENV_DEVELOPMENT : ENV_PRODUCTION;
     $dsn = $env == ENV_PRODUCTION ? 'sqlite:/maasland_app/www/db/prod.db' : 'sqlite:/maasland_app/www/db/dev.db';

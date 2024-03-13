@@ -275,8 +275,10 @@ dispatch_post  ('settings_upload',   'settings_upload');
 dispatch_get   ('settings_replicate',   'settings_replicate');
 
 dispatch_get   ('network',   'network_index');
+dispatch_get   ('network/:id', 'network_index'); //user refresh can create a get after the v put
 dispatch_put   ('network/:id', 'network_update');
 dispatch_get   ('manage/network',   'network_slave');
+dispatch_get   ('manage/network/:id', 'network_slave'); //user refresh can create a get after the v put
 dispatch_put   ('manage/network/:id', 'network_update');
 
 
