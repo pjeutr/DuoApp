@@ -186,7 +186,9 @@ function collapseButton($params = null) {
     $params = func_get_args();
     $name = array_shift($params);
     $id = array_shift($params);
-    return "<button class='btn btn-success btn-link text-white' type='button' data-toggle='collapse' data-target='#$id' aria-expanded='false' aria-controls='$id'><i class='fa fa-chevron-right'></i>$name</button>";
+    $class = array_shift($params);
+
+    return "<button class='btn btn-success $class' type='button' data-toggle='collapse' data-target='#$id' aria-expanded='false' aria-controls='$id'><i class='fa fa-chevron-right'></i>$name</button>";
 }
 function buttonLink_to($params = null) {
     $params = func_get_args();

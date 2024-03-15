@@ -16,7 +16,7 @@ echo configureGPIO();
 echo "\nMaster=". getGPIO(GVAR::$GPIO_MASTER)." => ".(checkIfMaster() ? "Master" : "Slave");
 echo "\nVoltage=". getGPIO(GVAR::$OUT12V_PIN);
 echo "\nBuzzer=". getGPIO(GVAR::$BUZZER_PIN);
-echo "\nRunning led=". getGPIO(GVAR::$RUNNING_LED);
+echo "\nRunning led=". (getGPIO(GVAR::$RUNNING_LED) ? "Off" : "On");
 echo "\nButton1=". getGPIO(GVAR::$GPIO_BUTTON1);
 echo "\nButton2=". getGPIO(GVAR::$GPIO_BUTTON2);
 echo "\nSensor1=". getGPIO(GVAR::$GPIO_DOORSTATUS1)."_".getGPIO(GVAR::$GPIO_DOORSTATUS1N);

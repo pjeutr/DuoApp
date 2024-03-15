@@ -61,9 +61,8 @@ function network_update() {
         //change network
         if(isset($_POST['dhcp'])) {
             mylog("DHCP");
-            $srcfile='/etc/network/interfaces.org';
-            $dstfile='/etc/network/interfaces';
-            copy($srcfile, $dstfile);
+
+            updateNetworkMakeDHCP();
 
             if(update_with_sql("UPDATE settings SET value = 1 WHERE id = 11 AND name = 'dhcp'", [])) {
                 $swalMessage = swal_message("Network settings have changed to DHCP!".$restartMessage, "Great", "success");
@@ -237,6 +236,13 @@ function updateMasterIP($ip) {
     //header('refresh:5;url=http://'.$_SERVER['HTTP_HOST'].'/?/manage/network' ); 
     //header('Location: http://'.$_SERVER['HTTP_HOST'].'/?/manage/network');
     //redirect_to('http://'.$_SERVER['HTTP_HOST'].'/?/manage/network');
+}
+
+function updateNetworkMakeDHCP() {
+    //copy orignal file with DHCP settings to interfaces
+    $srcfile='/etc/network/interfaces.org';
+    $dstfile='/etc/network/interfaces';
+    copy($srcfile, $dstfile);
 }
 
 function updateNetwork($ip, $netmask, $gateway) {
