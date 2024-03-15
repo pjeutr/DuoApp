@@ -36,7 +36,7 @@ First manage network settings on slaves:
         </div>
         <div class="flex-row-2 flex-cell" role="cell">
             <button type="submit" class="btn btn-success">
-                <i class="fa fa-edit"></i> <?=  L("button_save"); ?>  and restart network
+                <i class="fa fa-edit"></i> <?=  L("button_save"); ?>
             </button>
         </div>
     </div>
