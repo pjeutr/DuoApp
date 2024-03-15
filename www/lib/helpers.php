@@ -182,11 +182,17 @@ function mdnsBrowse($type) {
 /* 
 *   HTML View functions 
 */
+function collapseButton($params = null) {
+    $params = func_get_args();
+    $name = array_shift($params);
+    $id = array_shift($params);
+    return "<button class='btn btn-success btn-link text-white' type='button' data-toggle='collapse' data-target='#$id' aria-expanded='false' aria-controls='$id'><i class='fa fa-chevron-right'></i>$name</button>";
+}
 function buttonLink_to($params = null) {
     $params = func_get_args();
     $name = array_shift($params);
     $url = call_user_func_array('url_for', $params);
-    return "<a class=\"btn btn-secondary\" href=\"$url\">$name</a>";
+    return "<a class='btn btn-secondary' href='$url'>$name</a>";
 }
 
 function link_to($params = null) {
@@ -194,7 +200,7 @@ function link_to($params = null) {
     $name = array_shift($params);
     $url = call_user_func_array('url_for', $params);
 
-    return "<a href=\"$url\">$name</a>";
+    return "<a href='$url'>$name</a>";
 }
 
 function iconLink_to($name, $link, $style, $icon = null) {
