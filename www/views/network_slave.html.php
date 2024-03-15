@@ -96,7 +96,7 @@ $.post('url', data); -->
         </div>
         <div class="flex-row-2 flex-cell" role="cell">
             <button type="submit" class="btn btn-success">
-                <i class="fa fa-edit"></i> <?=  L("button_save"); ?> and restart services
+                <i class="fa fa-edit"></i> <?=  L("button_save"); ?>
             </button>
         </div>
     </div>
@@ -128,7 +128,7 @@ $.post('url', data); -->
         </div>
         <div class="flex-row-2 flex-cell" role="cell">
             <button type="submit" class="btn btn-success">
-                <i class="fa fa-edit"></i> <?=  L("button_save"); ?> and restart network
+                <i class="fa fa-edit"></i> <?=  L("button_save"); ?>
             </button>
         </div>
     </div>
@@ -265,20 +265,38 @@ $.post('url', data); -->
         //$("#networkForm").validate();
 
         $( "#masterForm" ).on( "submit", function( event ) {
-            /*
             event.preventDefault();
 
             var data = $("#masterForm").serialize();
-            var posting = $.post('/?/manage/network/3', data );
-            posting.done(function( data ) {
-                console.log(data);
-                swal("Restart");
-                window.setTimeout( function(){
-                    console.log("redirect!");
-                    window.location = "/?/manage/network";
-                },5000 );
+            var posting = $.post('/?/manage/network/3', data, 
+                function(){
+                    //console.log("is nodig voor json result")
+                }, "json");
+
+            /*
+            swal({
+                title: "Warning!",
+                html: "Updates are made and service will be restarted.<br><a href='http://<?= $_SERVER['SERVER_ADDR'] ?>/?/manage/network'>wait 5 seconds, then klik here</a>",
+                icon: "success",
+                showCancelButton: false,
+                showConfirmButton: false
             });
             */
+
+            posting.done(function( result ) {
+                console.log(result);
+                swal({
+                    title: "Warning!",
+                    html: result.message,
+                    icon: "success",
+                    showCancelButton: false,
+                    showConfirmButton: false
+                });
+                // window.setTimeout( function(){
+                //     console.log("redirect!");
+                //     window.location = "http://<?= $_SERVER['SERVER_ADDR'] ?>/?/manage/network";
+                // },5000 );
+            });
         });
 
         var master = $("[name='master']").bootstrapSwitch();

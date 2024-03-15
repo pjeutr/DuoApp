@@ -19,6 +19,11 @@ function network_slave() {
     set('network', getNetworkData());
     return html('network_slave.html.php');
 }
+
+//helper method for functions below
+function jsonMessage($status = 0, $message="Someting went wrong") {
+    return json_encode(array ('status'=>$status, 'message'=>$message));
+}
 /*
 *   function can be called from network.html.php and network_slave.html.php
 *   id 1 => change network on master => network.html.php
@@ -29,23 +34,28 @@ function network_update() {
     $id = filter_var(params('id'), FILTER_VALIDATE_INT);
     //standard message is failure, update to success if something has changed
     $swalMessage = swal_message("Something went wrong!");
-    $restartMessage = "<p>Restart to make these settings active</p>";
+    //$restartMessage = "<p>Wait for the system to restart and redirect to the new page</p>";
+    $restartMessage = "<p>Restart the system to load new settings</p>";
 
     if($id == 3) { 
         if(isset($_POST['master'])) {
             updateMasterIP(false);
 
             if(update_with_sql("UPDATE settings SET value = 1 WHERE id = 10 AND name = 'master_ip'", [])) {
-                $swalMessage = swal_message("Automatic Master IP discovery enabled", "Great", "success");
+                //$swalMessage = swal_message("Automatic Master IP discovery enabled", "Great", "success");
+                return jsonMessage(1, "Automatic Master IP discovery enabled".$restartMessage);
             }
+            return jsonMessage();
         } else {
             $ip = filter_var($_POST['master_ip'], FILTER_SANITIZE_STRING);
             $reloadService = "To load changes, the controller needs to be restarted";
             updateMasterIP($ip);
 
             if(update_with_sql("UPDATE settings SET value = '$ip' WHERE id = 10 AND name = 'master_ip'", [])) {
-                $swalMessage = swal_message("Automatic Master IP discovery disabled, <br>Master IP has changed to :".$ip, "Great", "success");
+                //$swalMessage = swal_message("Automatic Master IP discovery disabled, <br>Master IP has changed to :".$ip, "Great", "success");
+                return jsonMessage(1, "Automatic Master IP discovery disabled, <br>Master IP has changed to :".$ip.$restartMessage);
             }
+            return jsonMessage();
         }
     } else {
         //change network
@@ -221,6 +231,7 @@ function updateMasterIP($ip) {
     }
     //empty opcache, cli and webserver have seperate opcache, so do a restart to be sure
     //opcache_reset();
+    //TODO restart needs to be delayed, to allow writing changes to db/filesystem
     //exec('/scripts/restart_services.sh');
 
     //header('refresh:5;url=http://'.$_SERVER['HTTP_HOST'].'/?/manage/network' ); 
