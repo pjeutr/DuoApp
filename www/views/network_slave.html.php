@@ -67,7 +67,9 @@
                     <div class="card-body">
                         <div class="card-body table-responsive">
 
-                       
+<!-- Show extra warning message alert  -->
+<?= alert_message(L("warning_change_unreachable"), $title="Oops", $type="alert-danger") ?>
+
 <form id="masterForm" class="masterForm" action="<?= url_for('manage/network', 3) ?>" method="POST">
     <input type="hidden" name="_method" id="_method" value="PUT">
 

@@ -13,11 +13,13 @@ set('title', L("network"));
                     <div class="card-body">
                         <div class="card-body table-responsive">
 
+<!-- Show extra warning message alert  -->
+<?= alert_message(L("warning_change_unreachable"), $title="Oops", $type="alert-danger") ?>
 
-<hr>
+<hr><b>
 Before changing network settings on Master.
 First manage network settings on slaves:
-<p>
+</b><p>
 <?php foreach (find_controllers() as $controller) {  ?>
     <a href="http://<?= $controller->ip ?>/?/manage/network" target="<?= $controller->ip ?>"><?= $controller->name ?>-<?= $controller->name ?></a><br>
 <?php } ?>

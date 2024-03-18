@@ -231,6 +231,17 @@ function deleteLink_to($params = null) {
     // ><i class=\"fa fa-times\"></i>$name</a>";    
 }
 
+function alert_message($message, $title="Oops", $type="alert-danger") {
+return <<<EOT
+<div class="alert $type">
+    <button type="button" aria-hidden="true" class="close" data-dismiss="alert">
+        <i class="nc-icon nc-simple-remove"></i>
+    </button>
+    <span>$message</span>
+</div>
+EOT;
+}
+
 //format message for swal
 //TODO reorganise in app.js
 function swal_message($message, $title="Oops", $type="error") {

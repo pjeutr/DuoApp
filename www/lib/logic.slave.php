@@ -234,6 +234,12 @@ function doFactoryReset() {
     }
 
     //put network setting back to default/dhcp
+    updateNetworkMakeDHCP();
+    //put master IP back to automatic / remove .extensions.php
+    updateMasterIP(false);
+
+    //turn on led to signal ready, on = 0
+    exec("echo 0 >/sys/class/gpio/gpio".GVAR::$RUNNING_LED."/value");
 
 }
 
