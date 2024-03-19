@@ -5,6 +5,9 @@ require_once 'lib/i18n.class.php';
 require_once 'lib/helpers.php';
 require_once '/maasland_app/vendor/autoload.php';
 require_once '/maasland_app/www/lib/logic.slave.php';
+//needed for firmware reset
+define('ISPC_CLASS_PATH', 'lib/vlibtemplate');
+require "lib/vlibtemplate/tpl.inc.php";
 
 function configure() {
     //configure and initialize gpio 

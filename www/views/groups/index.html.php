@@ -18,12 +18,16 @@ set('title', L("groups"));
                             <div class="card-header bg-custom">
                                 <?= collapseButton($group->name, 'multiCollapse'.$group->id, 'btn-link text-success', null) ?>
                                 &nbsp;
-                                <?= iconLink_to(L::button_edit, 'groups/'.$group->id.'/edit', 'btn-link text-success', null) ?>
-                                &nbsp;
-                                <?= deleteLink_to(L::button_delete, 'groups', $group->id) ?>   
+                                <div class="float-right">
+                                    <?= iconLink_to(L::button_edit, 'groups/'.$group->id.'/edit', 'btn-link text-success', null) ?>
+                                    &nbsp;
+                                    <?= deleteLink_to(L::button_delete, 'groups', $group->id) ?>   
+                                </div>
                             </div>   
 
-                            <div class="card-body collapse multi-collapse" id="multiCollapse<?= $group->id ?>">
+                            <div class="card-body collapse multi-collapse
+                            <?= (isset($group_focus) && $group_focus == $group->id) ? "show" : "" ?>
+                            " id="multiCollapse<?= $group->id ?>">
                             <?php 
                             $counter = 0;
                             foreach ($rules as $rule) { 
@@ -101,7 +105,7 @@ set('title', L("groups"));
                                         </div>
                                         <div class="col-sm-4 form-group mt-4">
                                             <button type="submit" class="btn btn-link text-success">
-                                              <i class="fa fa-edit"></i> <?php echo L::button_newrule; ?>
+                                              <i class="fa fa-edit"></i> <?= L::button_save ?>
                                             </button>
                                         </div>
                                     </div>

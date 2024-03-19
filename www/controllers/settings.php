@@ -8,8 +8,6 @@ template used:
 http://vlib.clausvb.de/docs/multihtml/vlibtemplate/tutorial_simple_example.html
 
 */
-define('ISPC_CLASS_PATH', 'lib/vlibtemplate');
-require "lib/vlibtemplate/tpl.inc.php";
 
 function network_index() {
     set('network', getNetworkData());

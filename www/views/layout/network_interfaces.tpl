@@ -15,3 +15,4 @@ iface eth0 inet static
 address <tmpl_var name="ip_address">
 netmask <tmpl_var name="netmask">
 gateway <tmpl_var name="gateway">
+#dns-nameservers 8.8.8.8

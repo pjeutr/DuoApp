@@ -240,7 +240,7 @@ function doFactoryReset() {
 
     //turn on led to signal ready, on = 0
     exec("echo 0 >/sys/class/gpio/gpio".GVAR::$RUNNING_LED."/value");
-
+    mylog("Finished doFactoryReset. Turned on running led.");
 }
 
 /*
