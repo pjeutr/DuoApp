@@ -243,7 +243,6 @@ EOT;
 }
 
 //format message for swal
-//TODO reorganise in app.js
 function swal_message($message, $title="Oops", $type="error") {
     if(is_array($message)) {
         $message = implode("<br>", $message);
@@ -257,6 +256,7 @@ function swal_message_success($message) {
     return swal_message($message, L("message_success_title"), "success");
 }
 
+//Format DateTime and adjust to reflect the local timezone 
 function print_date($timestamp) {
     //$tz = "Europe/Amsterdam";
     //https://stackoverflow.com/questions/20288789/php-date-with-timezone
